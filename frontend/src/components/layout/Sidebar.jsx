@@ -46,7 +46,7 @@ export function Sidebar({ open, onClose }) {
           </button>
         </div>
 
-        <div className="mt-6 rounded-3xl border border-border bg-slate-900/70 p-4">
+        <div className="mt-6 rounded-3xl border border-border bg-surface/70 p-4">
           <p className="section-kicker">Organiza mejor tu tiempo</p>
           <h2 className="mt-3 text-2xl font-semibold text-text">Manten todo bajo control.</h2>
           <p className="mt-3 text-sm leading-6 text-muted">
@@ -61,8 +61,8 @@ export function Sidebar({ open, onClose }) {
                 <motion.div
                   className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-sm transition ${
                     isActive
-                      ? "border-primary/40 bg-primary/15 text-white"
-                      : "border-border bg-slate-900/50 text-muted hover:border-primary/30 hover:text-text"
+                      ? "border-primary/40 bg-primary/15 text-text shadow-soft"
+                      : "border-border bg-surface/50 text-muted hover:border-primary/30 hover:text-text"
                   }`}
                   whileHover={{ x: 2 }}
                 >
@@ -77,7 +77,7 @@ export function Sidebar({ open, onClose }) {
           ))}
         </nav>
 
-        <div className="mt-6 rounded-3xl border border-border bg-gradient-to-br from-slate-900/80 to-slate-950/80 p-4">
+        <div className="mt-6 rounded-3xl border border-border bg-gradient-to-br from-surface/90 to-bg/80 p-4">
           <p className="section-kicker">Consejo rapido</p>
           <p className="mt-3 text-sm leading-6 text-muted">
             Divide una tarea grande en subtareas para ver avances pequenos y mantener mejor el ritmo de trabajo.

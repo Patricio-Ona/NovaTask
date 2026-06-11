@@ -165,7 +165,7 @@ export function Topbar({ onOpenSidebar }) {
 
           <div className="relative z-40 w-full sm:max-w-[320px] lg:w-auto lg:max-w-none" ref={dropdownRef}>
             <button
-              className="group flex w-full items-center justify-between gap-2 rounded-[24px] border border-primary/20 bg-slate-900/80 px-2.5 py-2 text-left shadow-soft transition hover:border-primary/40 hover:bg-slate-900 sm:gap-3 sm:px-3 sm:py-2.5 lg:min-w-[290px] lg:justify-start"
+              className="group flex w-full items-center justify-between gap-2 rounded-[24px] border border-primary/20 bg-surface/80 px-2.5 py-2 text-left shadow-soft transition hover:border-primary/40 hover:bg-surface sm:gap-3 sm:px-3 sm:py-2.5 lg:min-w-[290px] lg:justify-start"
               onClick={() => setMenuOpen((current) => !current)}
               type="button"
             >
@@ -186,14 +186,14 @@ export function Topbar({ onOpenSidebar }) {
                 <p className="hidden truncate text-xs text-muted sm:block">{user?.email}</p>
               </div>
 
-              <div className="hidden rounded-full border border-border bg-slate-800/80 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted md:block">
+              <div className="hidden rounded-full border border-border bg-bg/50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted md:block">
                 Cuenta
               </div>
             </button>
 
             {menuOpen ? (
-              <div className="absolute right-0 top-[calc(100%+12px)] z-[80] w-full rounded-[28px] border border-border bg-slate-950/95 p-3 shadow-soft backdrop-blur sm:w-[320px]">
-                <div className="rounded-3xl border border-border bg-gradient-to-br from-slate-900/95 to-slate-950/90 p-4">
+              <div className="absolute right-0 top-[calc(100%+12px)] z-[80] w-full rounded-[28px] border border-border bg-surface/95 p-3 shadow-soft backdrop-blur sm:w-[320px]">
+                <div className="rounded-3xl border border-border bg-gradient-to-br from-surface/95 to-bg/90 p-4">
                   <div className="flex items-center gap-3">
                     <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-secondary text-sm font-semibold text-white">
                       {initials}

@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaTask UI/UX Board | Prototipo tipo Figma</title>
+  <meta
+    name="description"
+    content="Board UI/UX de NovaTask con diseno de alta fidelidad, sistema visual, flujo de usuario y prototipo navegable."
+  >
+  <link rel="stylesheet" href="figma-prototype.css">
+</head>
+<body>
+  <div class="grid-fade" aria-hidden="true"></div>
+
+  <header class="board-topbar">
+    <div class="topbar-left">
+      <div class="brand-lockup">
+        <span class="brand-mark">N</span>
+        <div>
+          <strong>NovaTask UI/UX Board</strong>
+          <small>High-fidelity prototype for thesis MVP</small>
+        </div>
+      </div>
+      <div class="topbar-badges">
+        <span class="topbar-chip">Desktop + Mobile</span>
+        <span class="topbar-chip">Design System</span>
+        <span class="topbar-chip">Prototype Flow</span>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <a class="topbar-link" href="index.html">Volver al sitio</a>
+      <a class="topbar-link primary-link" href="#prototype-lab">Abrir prototipo</a>
+    </div>
+  </header>
+
+  <main class="board-shell">
+    <aside class="board-sidebar">
+      <section class="sidebar-block">
+        <p class="sidebar-label">Proyecto</p>
+        <h1>NovaTask</h1>
+        <p class="sidebar-copy">
+          Plataforma web para organizacion academica universitaria orientada a estudiantes PUCE. Este tablero resume
+          el diseno completo de experiencia de usuario para el MVP de tesis.
+        </p>
+      </section>
+
+      <section class="sidebar-block">
+        <p class="sidebar-label">Objetivo UX</p>
+        <p class="sidebar-copy">
+          Reducir olvidos, bajar la carga mental y mejorar el cumplimiento de tareas con una interfaz visual, cercana y
+          facil de usar en contexto academico.
+        </p>
+      </section>
+
+      <section class="sidebar-block">
+        <p class="sidebar-label">Secciones</p>
+        <nav class="sidebar-nav">
+          <a href="#vision">Vision</a>
+          <a href="#system">Design System</a>
+          <a href="#prototype-lab">Prototype Lab</a>
+          <a href="#canvas">Figma Canvas</a>
+          <a href="#handoff">Handoff</a>
+        </nav>
+      </section>
+
+      <section class="sidebar-block sidebar-highlight">
+        <p class="sidebar-label">Entregable</p>
+        <p class="sidebar-copy">
+          Board UI/UX completo con pantallas de login, dashboard, Kanban, calendario, analiticas, plantillas y version
+          movil.
+        </p>
+      </section>
+    </aside>
+
+    <div class="board-content">
+      <section id="vision" class="board-section section-vision">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">01 Vision de producto</p>
+            <h2>La plataforma debe sentirse como un centro de control academico, no como una app corporativa.</h2>
+          </div>
+          <span class="section-chip">Tema de tesis alineado</span>
+        </div>
+
+        <div class="vision-grid">
+          <article class="card card-large">
+            <p class="card-kicker">Propuesta de valor</p>
+            <h3>Un solo lugar para ver materias, entregas, proyectos y progreso semanal.</h3>
+            <p>
+              NovaTask se disena para estudiantes que viven entre clases, Moodle, proyectos grupales y fechas de
+              entrega. La interfaz prioriza claridad, urgencia visual y control rapido.
+            </p>
+          </article>
+
+          <article class="card">
+            <p class="card-kicker">Persona principal</p>
+            <h3>Estudiante PUCE con alta carga</h3>
+            <p>
+              Usa varias materias a la vez, trabaja en grupo, olvida deadlines cuando cambia de contexto y necesita una
+              herramienta rapida, visual y en espanol.
+            </p>
+          </article>
+
+          <article class="card">
+            <p class="card-kicker">Pain points</p>
+            <ul class="clean-list">
+              <li>No ve toda la semana de un vistazo.</li>
+              <li>Olvida fechas entre diferentes plataformas.</li>
+              <li>No sabe que tarea desbloquea otra.</li>
+              <li>Se estresa por acumulacion de pendientes.</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <p class="card-kicker">UX success</p>
+            <ul class="clean-list">
+              <li>Menos tiempo para entender que hacer hoy.</li>
+              <li>Mayor porcentaje de tareas a tiempo.</li>
+              <li>Mejor sensacion de control semanal.</li>
+              <li>Interfaz simple segun SUS.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="flow-strip">
+          <article class="flow-step">
+            <span>01</span>
+            <h3>Entrar</h3>
+            <p>Login rapido y vista inmediata del estado academico.</p>
+          </article>
+          <article class="flow-step">
+            <span>02</span>
+            <h3>Priorizar</h3>
+            <p>Semaforos, deadlines y Kanban para decidir en que enfocarse.</p>
+          </article>
+          <article class="flow-step">
+            <span>03</span>
+            <h3>Ejecutar</h3>
+            <p>Tareas, subtareas, responsables y calendario semanal.</p>
+          </article>
+          <article class="flow-step">
+            <span>04</span>
+            <h3>Medir</h3>
+            <p>Analiticas para evaluar progreso y sostener la tesis.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="system" class="board-section">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">02 Design System</p>
+            <h2>Direccion visual: atelier academico + tablero digital.</h2>
+          </div>
+          <span class="section-chip">UI foundation</span>
+        </div>
+
+        <div class="system-grid">
+          <article class="card">
+            <p class="card-kicker">Color palette</p>
+            <div class="swatch-grid">
+              <div class="swatch">
+                <span class="swatch-color color-ink"></span>
+                <strong>Ink</strong>
+                <small>#182229</small>
+              </div>
+              <div class="swatch">
+                <span class="swatch-color color-teal"></span>
+                <strong>Teal</strong>
+                <small>#1B6B67</small>
+              </div>
+              <div class="swatch">
+                <span class="swatch-color color-amber"></span>
+                <strong>Amber</strong>
+                <small>#D28842</small>
+              </div>
+              <div class="swatch">
+                <span class="swatch-color color-clay"></span>
+                <strong>Clay</strong>
+                <small>#B5563A</small>
+              </div>
+              <div class="swatch">
+                <span class="swatch-color color-mist"></span>
+                <strong>Mist</strong>
+                <small>#EEF2EE</small>
+              </div>
+              <div class="swatch">
+                <span class="swatch-color color-paper"></span>
+                <strong>Paper</strong>
+                <small>#F7F1E7</small>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <p class="card-kicker">Typography</p>
+            <div class="type-showcase">
+              <div>
+                <small>Display / Georgia</small>
+                <h3 class="type-display">Planifica con calma. Ejecuta con foco.</h3>
+              </div>
+              <div>
+                <small>UI / Segoe UI</small>
+                <p class="type-ui">
+                  Titulos claros, etiquetas compactas y contenido con alto contraste para lectura prolongada.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <p class="card-kicker">Spacing + rhythm</p>
+            <div class="token-stack">
+              <div><span>4</span><small>detalle fino</small></div>
+              <div><span>8</span><small>chip y tag</small></div>
+              <div><span>16</span><small>espaciado base</small></div>
+              <div><span>24</span><small>cards / modulos</small></div>
+              <div><span>32</span><small>bloques mayores</small></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <p class="card-kicker">Components</p>
+            <div class="component-stack">
+              <button class="demo-button primary">Primary action</button>
+              <button class="demo-button secondary">Secondary action</button>
+              <div class="demo-tag-row">
+                <span class="demo-tag teal">Entrega hoy</span>
+                <span class="demo-tag amber">Proyecto grupal</span>
+                <span class="demo-tag clay">Riesgo alto</span>
+              </div>
+              <div class="demo-input">Buscar materias, tareas o entregas</div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="prototype-lab" class="board-section">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">03 Prototype Lab</p>
+            <h2>Modo presentacion con navegacion clickable entre pantallas clave.</h2>
+          </div>
+          <span class="section-chip">Click to switch</span>
+        </div>
+
+        <div class="lab-shell">
+          <div class="lab-controls">
+            <button class="lab-chip is-active" type="button" data-screen-target="screen-login">Login</button>
+            <button class="lab-chip" type="button" data-screen-target="screen-dashboard">Dashboard</button>
+            <button class="lab-chip" type="button" data-screen-target="screen-kanban">Kanban</button>
+            <button class="lab-chip" type="button" data-screen-target="screen-calendar">Calendario</button>
+            <button class="lab-chip" type="button" data-screen-target="screen-analytics">Analiticas</button>
+            <button class="lab-chip" type="button" data-screen-target="screen-mobile">Mobile</button>
+          </div>
+
+          <div class="lab-stage">
+            <section class="demo-screen is-visible" id="screen-login" data-screen="screen-login">
+              <div class="browser-frame">
+                <div class="frame-top">
+                  <span class="dot red"></span>
+                  <span class="dot gold"></span>
+                  <span class="dot green"></span>
+                  <p>novatask.app / acceso</p>
+                </div>
+                <div class="login-layout">
+                  <div class="login-copy">
+                    <p class="mini-kicker">Bienvenido a NovaTask</p>
+                    <h3>Controla tu semana universitaria sin caos.</h3>
+                    <p>
+                      Vista clara de tareas, entregas, trabajo en equipo y progreso academico desde un solo lugar.
+                    </p>
+                    <div class="benefit-stack">
+                      <div class="benefit-item">Checklist diario</div>
+                      <div class="benefit-item">Calendario PUCE</div>
+                      <div class="benefit-item">Alertas por prioridad</div>
+                    </div>
+                  </div>
+                  <div class="login-panel">
+                    <h4>Ingresar</h4>
+                    <div class="demo-field">Correo institucional</div>
+                    <div class="demo-field">Contrasena</div>
+                    <button class="demo-button primary full">Entrar al panel</button>
+                    <button class="demo-button secondary full">Continuar con Google</button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="demo-screen" id="screen-dashboard" data-screen="screen-dashboard">
+              <div class="app-frame">
+                <aside class="app-sidebar">
+                  <div class="sidebar-brand">NovaTask</div>
+                  <nav>
+                    <a class="app-link active" href="#canvas">Dashboard</a>
+                    <a class="app-link" href="#canvas">Proyectos</a>
+                    <a class="app-link" href="#canvas">Calendario</a>
+                    <a class="app-link" href="#canvas">Analiticas</a>
+                    <a class="app-link" href="#canvas">Plantillas</a>
+                  </nav>
+                </aside>
+                <div class="app-main">
+                  <div class="app-head">
+                    <div>
+                      <p class="mini-kicker">Resumen semanal</p>
+                      <h3>Tu semana tiene 6 entregas y 2 hitos importantes.</h3>
+                    </div>
+                    <span class="demo-tag teal">Cumplimiento 82%</span>
+                  </div>
+                  <div class="metric-grid">
+                    <article class="metric-box"><strong>18</strong><span>Tareas activas</span></article>
+                    <article class="metric-box"><strong>5</strong><span>Materias activas</span></article>
+                    <article class="metric-box"><strong>3</strong><span>Deadlines hoy</span></article>
+                    <article class="metric-box"><strong>2</strong><span>Proyectos grupales</span></article>
+                  </div>
+                  <div class="dashboard-grid">
+                    <article class="panel-card">
+                      <div class="panel-head">
+                        <h4>Prioridades del dia</h4>
+                        <small>Orden sugerido</small>
+                      </div>
+                      <div class="stacked-task urgent">Wireframe de interfaz final</div>
+                      <div class="stacked-task">Exposicion de Gestion de Proyectos</div>
+                      <div class="stacked-task">Cuestionario de usabilidad</div>
+                    </article>
+                    <article class="panel-card">
+                      <div class="panel-head">
+                        <h4>Materias</h4>
+                        <small>Estado</small>
+                      </div>
+                      <div class="subject-line"><span>Integracion Curricular</span><b>90%</b></div>
+                      <div class="subject-line"><span>Arquitectura</span><b>76%</b></div>
+                      <div class="subject-line"><span>Investigacion</span><b>63%</b></div>
+                    </article>
+                    <article class="panel-card wide">
+                      <div class="panel-head">
+                        <h4>Actividad reciente</h4>
+                        <small>Hoy</small>
+                      </div>
+                      <div class="activity-line"><span>08:15</span><p>Se completo Plan aprobado.</p></div>
+                      <div class="activity-line"><span>10:00</span><p>Se movio Dashboard MVP a En curso.</p></div>
+                      <div class="activity-line"><span>13:10</span><p>Se creo bloque de estudio para jueves.</p></div>
+                    </article>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="demo-screen" id="screen-kanban" data-screen="screen-kanban">
+              <div class="app-frame app-frame-clean">
+                <div class="kanban-head">
+                  <div>
+                    <p class="mini-kicker">Proyecto</p>
+                    <h3>Diseno y desarrollo del MVP</h3>
+                  </div>
+                  <div class="demo-tag amber">Sprint UI/UX</div>
+                </div>
+                <div class="kanban-board">
+                  <article class="kanban-column">
+                    <div class="kanban-title"><h4>Por hacer</h4><span>4</span></div>
+                    <div class="kanban-card">Pantalla de registro</div>
+                    <div class="kanban-card">Sistema de notificaciones</div>
+                    <div class="kanban-card">Biblioteca de plantillas</div>
+                  </article>
+                  <article class="kanban-column">
+                    <div class="kanban-title"><h4>En curso</h4><span>3</span></div>
+                    <div class="kanban-card focus">Dashboard principal</div>
+                    <div class="kanban-card focus">Calendario responsive</div>
+                    <div class="kanban-card focus">Modal de nueva tarea</div>
+                  </article>
+                  <article class="kanban-column">
+                    <div class="kanban-title"><h4>Revision</h4><span>2</span></div>
+                    <div class="kanban-card review">Mapa de navegacion</div>
+                    <div class="kanban-card review">UI kit</div>
+                  </article>
+                  <article class="kanban-column">
+                    <div class="kanban-title"><h4>Hecho</h4><span>3</span></div>
+                    <div class="kanban-card done">Problema definido</div>
+                    <div class="kanban-card done">Objetivos claros</div>
+                    <div class="kanban-card done">Cronograma validado</div>
+                  </article>
+                </div>
+              </div>
+            </section>
+
+            <section class="demo-screen" id="screen-calendar" data-screen="screen-calendar">
+              <div class="app-frame app-frame-clean">
+                <div class="kanban-head">
+                  <div>
+                    <p class="mini-kicker">Planificacion</p>
+                    <h3>Calendario academico inteligente</h3>
+                  </div>
+                  <div class="demo-tag teal">Semana 20-26 abril</div>
+                </div>
+                <div class="calendar-demo">
+                  <div class="calendar-week">
+                    <div class="calendar-day"><strong>Lun</strong><span>20</span><small>Mapa UX</small></div>
+                    <div class="calendar-day active"><strong>Mar</strong><span>21</span><small>Wireframes</small></div>
+                    <div class="calendar-day"><strong>Mie</strong><span>22</span><small>UI kit</small></div>
+                    <div class="calendar-day alert"><strong>Jue</strong><span>23</span><small>Revision tutor</small></div>
+                    <div class="calendar-day"><strong>Vie</strong><span>24</span><small>Mockups</small></div>
+                    <div class="calendar-day"><strong>Sab</strong><span>25</span><small>Responsive</small></div>
+                    <div class="calendar-day"><strong>Dom</strong><span>26</span><small>Entrega</small></div>
+                  </div>
+                  <div class="agenda-card">
+                    <h4>Bloques sugeridos del martes</h4>
+                    <div class="agenda-line"><span>08:00</span><p>Priorizar backlog semanal</p></div>
+                    <div class="agenda-line"><span>11:00</span><p>Disenar pantallas del dashboard</p></div>
+                    <div class="agenda-line"><span>15:00</span><p>Prototipar flujo de tareas</p></div>
+                    <div class="agenda-line"><span>19:00</span><p>Actualizar avance de tesis</p></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="demo-screen" id="screen-analytics" data-screen="screen-analytics">
+              <div class="app-frame app-frame-clean">
+                <div class="kanban-head">
+                  <div>
+                    <p class="mini-kicker">Impacto</p>
+                    <h3>Analiticas para la evaluacion de tesis</h3>
+                  </div>
+                  <div class="demo-tag clay">Cuasi experimental</div>
+                </div>
+                <div class="analytics-stage">
+                  <article class="panel-card">
+                    <div class="panel-head">
+                      <h4>Indicadores</h4>
+                      <small>Grupo experimental</small>
+                    </div>
+                    <div class="metric-bar-row"><span>Cumplimiento</span><div class="metric-bar"><i style="width: 82%"></i></div><b>82%</b></div>
+                    <div class="metric-bar-row"><span>Pendientes</span><div class="metric-bar"><i style="width: 34%"></i></div><b>34%</b></div>
+                    <div class="metric-bar-row"><span>SUS</span><div class="metric-bar"><i style="width: 86%"></i></div><b>86</b></div>
+                  </article>
+                  <article class="panel-card">
+                    <div class="panel-head">
+                      <h4>Variables registradas</h4>
+                      <small>Data strategy</small>
+                    </div>
+                    <div class="spec-tags">
+                      <span>Fecha limite</span>
+                      <span>Fecha completada</span>
+                      <span>Materia</span>
+                      <span>Proyecto</span>
+                      <span>Prioridad</span>
+                      <span>Tiempo estimado</span>
+                      <span>Uso semanal</span>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </section>
+
+            <section class="demo-screen" id="screen-mobile" data-screen="screen-mobile">
+              <div class="mobile-stage">
+                <article class="phone-frame">
+                  <div class="phone-notch"></div>
+                  <div class="phone-screen">
+                    <p class="mini-kicker">Mobile home</p>
+                    <h3>Hoy tienes foco en 3 tareas.</h3>
+                    <div class="mobile-metric">Cumplimiento semanal <strong>82%</strong></div>
+                    <div class="mobile-task urgent">Entregar avance del marco teorico</div>
+                    <div class="mobile-task">Reunion de proyecto grupal</div>
+                    <div class="mobile-task">Revisar calendario de examenes</div>
+                    <div class="mobile-nav">
+                      <span class="active"></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="phone-frame">
+                  <div class="phone-notch"></div>
+                  <div class="phone-screen">
+                    <p class="mini-kicker">Task detail</p>
+                    <h3>Disenar dashboard principal</h3>
+                    <div class="mobile-pill-row">
+                      <span class="demo-tag amber">UI/UX</span>
+                      <span class="demo-tag teal">Alta prioridad</span>
+                    </div>
+                    <div class="mobile-note">
+                      Construir la pantalla con resumen semanal, deadlines, materias activas y actividad reciente.
+                    </div>
+                    <div class="mobile-check">Sidebar completa</div>
+                    <div class="mobile-check">Vista responsive</div>
+                    <div class="mobile-check muted">Analytics integrado</div>
+                  </div>
+                </article>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="canvas" class="board-section">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">04 Figma Canvas</p>
+            <h2>Frames de alta fidelidad organizados como tablero de diseno.</h2>
+          </div>
+          <span class="section-chip">Desktop + Mobile artboards</span>
+        </div>
+
+        <div class="canvas">
+          <article class="artboard artboard-cover">
+            <span class="artboard-label">Frame 01 / Cover</span>
+            <div class="cover-panel">
+              <p class="mini-kicker">NovaTask thesis prototype</p>
+              <h3>Organiza el semestre, no solo las tareas.</h3>
+              <p>UX board basado en el plan de titulacion y orientado a evaluacion de impacto con estudiantes PUCE.</p>
+            </div>
+          </article>
+
+          <article class="artboard">
+            <span class="artboard-label">Frame 02 / Login desktop</span>
+            <div class="mini-browser">
+              <div class="mini-window-top"></div>
+              <div class="mini-login-layout">
+                <div class="mini-slab">
+                  <small>NovaTask</small>
+                  <h4>Control semanal sin caos.</h4>
+                </div>
+                <div class="mini-form">
+                  <div class="mini-line"></div>
+                  <div class="mini-line"></div>
+                  <div class="mini-button"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="artboard">
+            <span class="artboard-label">Frame 03 / Dashboard</span>
+            <div class="mini-app">
+              <div class="mini-sidebar"></div>
+              <div class="mini-dashboard">
+                <div class="mini-header"></div>
+                <div class="mini-cards">
+                  <span></span><span></span><span></span><span></span>
+                </div>
+                <div class="mini-layout">
+                  <div class="mini-chart"></div>
+                  <div class="mini-panel"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="artboard">
+            <span class="artboard-label">Frame 04 / Kanban</span>
+            <div class="mini-board">
+              <div class="mini-column"><i></i><i></i><i></i></div>
+              <div class="mini-column active"><i></i><i></i><i></i></div>
+              <div class="mini-column"><i></i><i></i></div>
+              <div class="mini-column"><i></i><i></i><i></i></div>
+            </div>
+          </article>
+
+          <article class="artboard">
+            <span class="artboard-label">Frame 05 / Calendar</span>
+            <div class="mini-calendar">
+              <div class="mini-week">
+                <span></span><span class="active"></span><span></span><span class="alert"></span><span></span><span></span><span></span>
+              </div>
+              <div class="mini-agenda"></div>
+            </div>
+          </article>
+
+          <article class="artboard">
+            <span class="artboard-label">Frame 06 / Analytics</span>
+            <div class="mini-analytics">
+              <div class="mini-bars"><i style="width: 78%"></i><i style="width: 42%"></i><i style="width: 86%"></i></div>
+              <div class="mini-tag-cloud">
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+          </article>
+
+          <article class="artboard artboard-phone">
+            <span class="artboard-label">Frame 07 / Mobile home</span>
+            <div class="mini-phone">
+              <div class="mini-phone-notch"></div>
+              <div class="mini-phone-content">
+                <div class="mini-phone-line large"></div>
+                <div class="mini-phone-task urgent"></div>
+                <div class="mini-phone-task"></div>
+                <div class="mini-phone-task"></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="artboard artboard-notes">
+            <span class="artboard-label">Frame 08 / UX notes</span>
+            <div class="note-stack">
+              <div class="sticky-note amber-note">
+                <strong>Decision</strong>
+                <p>Dashboard primero para reducir la carga cognitiva al ingresar.</p>
+              </div>
+              <div class="sticky-note teal-note">
+                <strong>Evidence</strong>
+                <p>La tesis necesita medir cumplimiento, pendientes y satisfaccion SUS.</p>
+              </div>
+              <div class="sticky-note clay-note">
+                <strong>Mobile</strong>
+                <p>Priorizar acciones del dia y detalles de tarea con alto contraste.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="handoff" class="board-section">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">05 Handoff para desarrollo</p>
+            <h2>Que ya queda definido para pasar a React, Tailwind y Firebase.</h2>
+          </div>
+          <span class="section-chip">Ready for build</span>
+        </div>
+
+        <div class="handoff-grid">
+          <article class="card">
+            <p class="card-kicker">Paginas del MVP</p>
+            <ul class="clean-list">
+              <li>Login / registro</li>
+              <li>Dashboard academico</li>
+              <li>Vista de proyectos</li>
+              <li>Kanban de tareas</li>
+              <li>Calendario semanal</li>
+              <li>Analiticas</li>
+              <li>Plantillas PUCE</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <p class="card-kicker">Data model sugerido</p>
+            <ul class="clean-list">
+              <li>users</li>
+              <li>subjects</li>
+              <li>projects</li>
+              <li>tasks</li>
+              <li>subtasks</li>
+              <li>templates</li>
+              <li>usage_logs</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <p class="card-kicker">Mediciones para tesis</p>
+            <ul class="clean-list">
+              <li>Fecha de creacion y cierre de tareas</li>
+              <li>Porcentaje de tareas a tiempo</li>
+              <li>Cantidad de pendientes semanales</li>
+              <li>Uso semanal de la plataforma</li>
+              <li>Resultados del cuestionario SUS</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="figma-prototype.js"></script>
+</body>
+</html>

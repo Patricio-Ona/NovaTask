@@ -1,0 +1,260 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+
+  @@map("task_priority")
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  REVIEW
+  DONE
+
+  @@map("task_status")
+}
+
+enum ActivityEntityType {
+  PROJECT
+  TASK
+  SUBTASK
+  TEMPLATE
+  AUTH
+  SUBJECT
+  EVENT
+  TERM
+
+  @@map("activity_entity_type")
+}
+
+enum EventType {
+  CLASS
+  EXAM
+  MEETING
+  PERSONAL
+  DEADLINE
+
+  @@map("event_type")
+}
+
+model User {
+  id             String           @id @default(uuid()) @db.Uuid
+  name           String           @map("full_name") @db.VarChar(120)
+  email          String           @unique @db.VarChar(160)
+  passwordHash   String           @map("password_hash")
+  avatarUrl      String?          @map("avatar_url")
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+  projects       Project[]
+  activityLogs   ActivityLog[]
+  refreshTokens  RefreshToken[]
+  tags           Tag[]
+  academicTerms  AcademicTerm[]
+  subjects       Subject[]
+  events         Event[]
+
+  @@map("users")
+}
+
+model AcademicTerm {
+  id         String    @id @default(uuid()) @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  name       String    @db.VarChar(160)
+  startDate  DateTime  @map("start_date")
+  endDate    DateTime  @map("end_date")
+  isActive   Boolean   @default(false) @map("is_active")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subjects   Subject[]
+
+  @@index([userId], map: "idx_academic_terms_user_id")
+  @@index([userId, isActive], map: "idx_academic_terms_user_active")
+  @@map("academic_terms")
+}
+
+model Subject {
+  id             String        @id @default(uuid()) @db.Uuid
+  userId         String        @map("user_id") @db.Uuid
+  academicTermId String?       @map("academic_term_id") @db.Uuid
+  name           String        @db.VarChar(160)
+  code           String?       @db.VarChar(40)
+  instructor     String?       @db.VarChar(160)
+  color          String        @default("#6366F1") @db.VarChar(20)
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  academicTerm   AcademicTerm? @relation(fields: [academicTermId], references: [id], onDelete: SetNull)
+  projects       Project[]
+  events         Event[]
+
+  @@index([userId], map: "idx_subjects_user_id")
+  @@index([academicTermId], map: "idx_subjects_term_id")
+  @@unique([userId, name], map: "uq_subjects_user_name")
+  @@map("subjects")
+}
+
+model Project {
+  id          String    @id @default(uuid()) @db.Uuid
+  userId      String    @map("user_id") @db.Uuid
+  subjectId   String?   @map("subject_id") @db.Uuid
+  title       String    @db.VarChar(180)
+  description String?
+  color       String    @default("#6366F1") @db.VarChar(20)
+  dueDate     DateTime? @map("due_date")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject     Subject?  @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  tasks       Task[]
+  events      Event[]
+
+  @@index([userId], map: "idx_projects_user_id")
+  @@index([subjectId], map: "idx_projects_subject_id")
+  @@map("projects")
+}
+
+model Task {
+  id          String        @id @default(uuid()) @db.Uuid
+  projectId   String        @map("project_id") @db.Uuid
+  title       String        @db.VarChar(180)
+  description String?
+  priority    TaskPriority  @default(MEDIUM)
+  status      TaskStatus    @default(TODO)
+  dueDate     DateTime?     @map("due_date")
+  position    Int           @default(0)
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+  project     Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  subtasks    Subtask[]
+  taskTags    TaskTag[]
+
+  @@index([projectId], map: "idx_tasks_project_id")
+  @@index([status], map: "idx_tasks_status")
+  @@index([dueDate], map: "idx_tasks_due_date")
+  @@map("tasks")
+}
+
+model Subtask {
+  id         String   @id @default(uuid()) @db.Uuid
+  taskId     String   @map("task_id") @db.Uuid
+  title      String   @db.VarChar(180)
+  completed  Boolean  @default(false)
+  createdAt  DateTime @default(now()) @map("created_at")
+  task       Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([taskId], map: "idx_subtasks_task_id")
+  @@map("subtasks")
+}
+
+model Tag {
+  id       String    @id @default(uuid()) @db.Uuid
+  userId   String    @map("user_id") @db.Uuid
+  name     String    @db.VarChar(60)
+  color    String    @default("#8B5CF6") @db.VarChar(20)
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  taskTags TaskTag[]
+
+  @@index([userId], map: "idx_tags_user_id")
+  @@unique([userId, name], map: "uq_tags_user_name")
+  @@map("tags")
+}
+
+model TaskTag {
+  taskId String @map("task_id") @db.Uuid
+  tagId  String @map("tag_id") @db.Uuid
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([taskId, tagId])
+  @@index([tagId], map: "idx_task_tags_tag_id")
+  @@map("task_tags")
+}
+
+model Event {
+  id          String     @id @default(uuid()) @db.Uuid
+  userId      String     @map("user_id") @db.Uuid
+  subjectId   String?    @map("subject_id") @db.Uuid
+  projectId   String?    @map("project_id") @db.Uuid
+  title       String     @db.VarChar(180)
+  description String?
+  startAt     DateTime   @map("start_at")
+  endAt       DateTime   @map("end_at")
+  allDay      Boolean    @default(false) @map("all_day")
+  type        EventType  @default(PERSONAL)
+  color       String     @default("#0EA5E9") @db.VarChar(20)
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject     Subject?   @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  project     Project?   @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  @@index([userId], map: "idx_events_user_id")
+  @@index([subjectId], map: "idx_events_subject_id")
+  @@index([projectId], map: "idx_events_project_id")
+  @@index([startAt], map: "idx_events_start_at")
+  @@map("events")
+}
+
+model ActivityLog {
+  id         String             @id @default(uuid()) @db.Uuid
+  userId     String             @map("user_id") @db.Uuid
+  action     String             @db.VarChar(120)
+  entityType ActivityEntityType @map("entity_type")
+  entityId   String             @map("entity_id") @db.Uuid
+  createdAt  DateTime           @default(now()) @map("created_at")
+  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "idx_activity_logs_user_id")
+  @@index([entityType], map: "idx_activity_logs_entity_type")
+  @@map("activity_logs")
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  token     String    @unique
+  expiresAt DateTime  @map("expires_at")
+  revokedAt DateTime? @map("revoked_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "idx_refresh_tokens_user_id")
+  @@map("refresh_tokens")
+}
+
+model Template {
+  id            String         @id @default(uuid()) @db.Uuid
+  name          String         @db.VarChar(160)
+  description   String
+  color         String         @default("#6366F1") @db.VarChar(20)
+  createdAt     DateTime       @default(now()) @map("created_at")
+  templateTasks TemplateTask[]
+
+  @@map("templates")
+}
+
+model TemplateTask {
+  id          String       @id @default(uuid()) @db.Uuid
+  templateId  String       @map("template_id") @db.Uuid
+  title       String       @db.VarChar(180)
+  description String?
+  priority    TaskPriority @default(MEDIUM)
+  status      TaskStatus   @default(TODO)
+  position    Int          @default(0)
+  createdAt   DateTime     @default(now()) @map("created_at")
+  template    Template     @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@index([templateId], map: "idx_template_tasks_template_id")
+  @@map("template_tasks")
+}

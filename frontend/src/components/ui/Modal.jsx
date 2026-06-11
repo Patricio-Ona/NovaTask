@@ -6,7 +6,7 @@ export function Modal({ open, title, description, onClose, children }) {
       {open ? (
         <motion.div
           animate={{ opacity: 1 }}
-          className="fixed inset-0 z-40 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm"
+          className="modal-overlay"
           exit={{ opacity: 0 }}
           initial={{ opacity: 0 }}
           onClick={onClose}

@@ -2,9 +2,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useToast } from "../../context/ToastContext";
 
 const toneStyles = {
-  info: "border-primary/40 bg-slate-900 text-text",
-  success: "border-success/40 bg-slate-900 text-text",
-  error: "border-danger/40 bg-slate-900 text-text",
+  info: "border-primary/35 text-text",
+  success: "border-success/35 text-text",
+  error: "border-danger/35 text-text",
 };
 
 export function ToastViewport() {
@@ -17,7 +17,7 @@ export function ToastViewport() {
           <motion.div
             key={toast.id}
             animate={{ opacity: 1, y: 0 }}
-            className={`pointer-events-auto rounded-2xl border px-4 py-3 shadow-card ${toneStyles[toast.tone]}`}
+            className={`pointer-events-auto rounded-2xl border bg-surface/95 px-4 py-3 shadow-card backdrop-blur ${toneStyles[toast.tone]}`}
             exit={{ opacity: 0, y: -10 }}
             initial={{ opacity: 0, y: -18 }}
             transition={{ duration: 0.2 }}

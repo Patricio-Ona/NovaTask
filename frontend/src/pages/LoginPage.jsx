@@ -95,7 +95,7 @@ export function LoginPage() {
               ["Flujo claro", "Mueve tareas por etapas y visualiza lo que sigue."],
               ["Mejor seguimiento", "Identifica prioridades y manten el ritmo cada semana."],
             ].map(([title, description]) => (
-              <div key={title} className="rounded-3xl border border-border bg-slate-900/65 p-5">
+              <div key={title} className="interactive-card">
                 <p className="text-sm font-semibold text-text">{title}</p>
                 <p className="mt-3 text-sm leading-6 text-muted">{description}</p>
               </div>
@@ -109,7 +109,7 @@ export function LoginPage() {
           initial={{ opacity: 0, x: 18 }}
           transition={{ duration: 0.25 }}
         >
-          <div className="flex items-center gap-3 rounded-2xl border border-border bg-slate-900/60 p-1">
+          <div className="flex items-center gap-3 rounded-2xl border border-border bg-surface/70 p-1 shadow-card">
             {[
               ["login", "Iniciar sesion"],
               ["register", "Crear cuenta"],
@@ -175,7 +175,6 @@ export function LoginPage() {
               {loading ? "Procesando..." : mode === "login" ? "Entrar" : "Crear cuenta"}
             </button>
           </form>
-
         </motion.section>
       </div>
     </div>

@@ -211,7 +211,7 @@ export function DashboardPage() {
           <div className="mt-6 space-y-3">
             {data.focusTasks.length ? (
               data.focusTasks.map((task) => (
-                <div key={task.id} className="rounded-3xl border border-border bg-slate-900/70 p-4">
+                <div key={task.id} className="surface-tile">
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
@@ -253,7 +253,7 @@ export function DashboardPage() {
           {quickLinks.map((item) => (
             <Link
               key={item.to}
-              className="group rounded-3xl border border-border bg-slate-900/65 p-5 transition hover:-translate-y-0.5 hover:border-primary/35 hover:bg-slate-900/85"
+              className="interactive-card group"
               to={item.to}
             >
               <p className="font-semibold text-text">{item.title}</p>
@@ -281,7 +281,7 @@ export function DashboardPage() {
           <div className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
             {data.activeSubjects.length ? (
               data.activeSubjects.map((subject) => (
-                <article key={subject.id} className="rounded-3xl border border-border bg-slate-900/70 p-4">
+                <article key={subject.id} className="surface-tile">
                   <div className="flex items-center gap-3">
                     <span className="h-3 w-3 rounded-full" style={{ backgroundColor: subject.color }} />
                     <div>
@@ -315,7 +315,7 @@ export function DashboardPage() {
           <div className="mt-6 space-y-3">
             {data.upcomingEvents.length ? (
               data.upcomingEvents.map((event) => (
-                <div key={event.id} className="rounded-3xl border border-border bg-slate-900/70 p-4">
+                <div key={event.id} className="surface-tile">
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <div className="flex items-center gap-2">
@@ -348,7 +348,7 @@ export function DashboardPage() {
 
           <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-7">
             {data.weeklyLoad.map((day) => (
-              <div key={day.date} className="rounded-3xl border border-border bg-slate-900/65 p-4">
+              <div key={day.date} className="surface-tile">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">{day.label}</p>
                 <strong className="mt-3 block text-3xl font-semibold text-text">{day.count}</strong>
                 <p className="mt-2 text-xs text-muted">
@@ -360,7 +360,7 @@ export function DashboardPage() {
 
           <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 2xl:grid-cols-4">
             {data.statusBreakdown.map((item) => (
-              <div key={item.status} className="rounded-3xl border border-border bg-slate-950/55 p-4">
+              <div key={item.status} className="surface-tile">
                 <p className="text-sm text-muted">{item.label}</p>
                 <div className="mt-4 flex flex-wrap items-end justify-between gap-3">
                   <strong className="text-3xl font-semibold text-text">{item.count}</strong>
@@ -382,7 +382,7 @@ export function DashboardPage() {
           <div className="mt-6 space-y-3">
             {data.dueSoon.length ? (
               data.dueSoon.map((task) => (
-                <div key={task.id} className="rounded-3xl border border-border bg-slate-900/70 p-4">
+                <div key={task.id} className="surface-tile">
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <p className="font-semibold text-text">{task.title}</p>
@@ -414,7 +414,7 @@ export function DashboardPage() {
           <div className="mt-6 grid gap-4 xl:grid-cols-2">
             {data.projectSummaries.length ? (
               data.projectSummaries.map((project) => (
-                <article key={project.id} className="rounded-3xl border border-border bg-slate-900/70 p-5">
+                <article key={project.id} className="app-card">
                   <div className="flex items-center gap-3">
                     <span className="h-3 w-3 rounded-full" style={{ backgroundColor: project.color }} />
                     <h3 className="font-semibold text-text">{project.title}</h3>
@@ -429,7 +429,7 @@ export function DashboardPage() {
                       <strong className="mt-2 block text-2xl text-text">{project.completed}</strong>
                     </div>
                   </div>
-                  <div className="mt-5 h-3 overflow-hidden rounded-full bg-slate-800">
+                  <div className="mt-5 h-3 overflow-hidden rounded-full bg-bg/70">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-primary to-secondary"
                       style={{ width: `${project.tasks ? Math.round((project.completed / project.tasks) * 100) : 0}%` }}
@@ -454,7 +454,7 @@ export function DashboardPage() {
           <div className="mt-6 space-y-3">
             {data.activity.length ? (
               data.activity.map((item) => (
-                <div key={item.id} className="rounded-3xl border border-border bg-slate-900/70 p-4">
+                <div key={item.id} className="surface-tile">
                   <p className="text-sm font-semibold text-text">{activityLabels[item.action] ?? "Actualizacion registrada"}</p>
                   <p className="mt-2 text-xs uppercase tracking-[0.18em] text-muted">{item.entityType}</p>
                   <p className="mt-3 text-xs text-muted">{formatDate(item.createdAt, { withYear: true, withTime: true })}</p>
@@ -477,7 +477,7 @@ function EmptyInline({ message }) {
 function ActionCard({ title, description, to, label }) {
   return (
     <Link
-      className="group rounded-3xl border border-border bg-slate-900/65 p-5 transition hover:-translate-y-0.5 hover:border-primary/35 hover:bg-slate-900/85"
+      className="interactive-card group"
       to={to}
     >
       <p className="font-semibold text-text">{title}</p>
@@ -491,14 +491,14 @@ function ActionCard({ title, description, to, label }) {
 
 function SpotlightCard({ label, value, tone, helper }) {
   const toneClass = {
-    danger: "border-danger/25 bg-gradient-to-br from-danger/15 to-slate-950/55 text-danger",
-    primary: "border-primary/25 bg-gradient-to-br from-primary/15 to-slate-950/55 text-primary",
-    secondary: "border-secondary/25 bg-gradient-to-br from-secondary/15 to-slate-950/55 text-secondary",
-    success: "border-success/25 bg-gradient-to-br from-success/15 to-slate-950/55 text-success",
+    danger: "spotlight-danger",
+    primary: "spotlight-primary",
+    secondary: "spotlight-secondary",
+    success: "spotlight-success",
   };
 
   return (
-    <div className={`rounded-[28px] border px-4 py-4 shadow-soft sm:px-5 sm:py-5 ${toneClass[tone] ?? toneClass.primary}`}>
+    <div className={`spotlight-card ${toneClass[tone] ?? toneClass.primary}`}>
       <div className="flex items-start justify-between gap-3">
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em]">{label}</p>
         <span className="h-2.5 w-2.5 rounded-full bg-current opacity-80" />

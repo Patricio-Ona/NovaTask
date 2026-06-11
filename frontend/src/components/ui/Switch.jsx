@@ -5,7 +5,7 @@ import { cn } from "../../lib/utils";
 export const Switch = React.forwardRef(({ className, ...props }, ref) => (
   <SwitchPrimitive.Root
     className={cn(
-      "peer inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full border border-border bg-slate-900/80 transition data-[state=checked]:border-primary/50 data-[state=checked]:bg-primary/20",
+      "peer inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full border border-border bg-surface/80 shadow-card transition data-[state=checked]:border-primary/50 data-[state=checked]:bg-primary/20",
       className
     )}
     ref={ref}

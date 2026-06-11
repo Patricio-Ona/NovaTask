@@ -166,6 +166,102 @@
       linear-gradient(180deg, rgba(var(--surface-gradient-start), 0.96) 0%, rgba(var(--surface-gradient-end), 0.92) 100%);
   }
 
+  .interactive-card {
+    @apply app-card transition duration-200 hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-soft;
+  }
+
+  .surface-tile {
+    @apply rounded-3xl border border-border p-4 shadow-card backdrop-blur-sm;
+    background-image:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 24%),
+      linear-gradient(180deg, rgba(30, 41, 59, 0.84) 0%, rgba(15, 23, 42, 0.92) 100%);
+  }
+
+  .light .surface-tile {
+    background-image:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.34) 24%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(244, 247, 255, 0.96) 100%);
+    box-shadow:
+      0 16px 32px rgba(148, 163, 184, 0.14),
+      inset 0 1px 0 rgba(255, 255, 255, 0.94);
+  }
+
+  .spotlight-card {
+    @apply rounded-[28px] border px-4 py-4 shadow-soft sm:px-5 sm:py-5;
+    background-image:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0) 28%),
+      linear-gradient(180deg, rgba(30, 41, 59, 0.88) 0%, rgba(15, 23, 42, 0.92) 100%);
+  }
+
+  .light .spotlight-card {
+    background-image:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.76) 0%, rgba(255, 255, 255, 0.22) 28%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(243, 247, 255, 0.94) 100%);
+    box-shadow:
+      0 18px 34px rgba(148, 163, 184, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.96);
+  }
+
+  .spotlight-primary {
+    @apply border-primary/25 text-primary;
+    background-image:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0) 28%),
+      radial-gradient(circle at top right, rgba(99, 102, 241, 0.18), transparent 40%),
+      linear-gradient(180deg, rgba(30, 41, 59, 0.88) 0%, rgba(15, 23, 42, 0.92) 100%);
+  }
+
+  .spotlight-secondary {
+    @apply border-secondary/25 text-secondary;
+    background-image:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0) 28%),
+      radial-gradient(circle at top right, rgba(139, 92, 246, 0.18), transparent 40%),
+      linear-gradient(180deg, rgba(30, 41, 59, 0.88) 0%, rgba(15, 23, 42, 0.92) 100%);
+  }
+
+  .spotlight-success {
+    @apply border-success/25 text-success;
+    background-image:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0) 28%),
+      radial-gradient(circle at top right, rgba(34, 197, 94, 0.18), transparent 40%),
+      linear-gradient(180deg, rgba(30, 41, 59, 0.88) 0%, rgba(15, 23, 42, 0.92) 100%);
+  }
+
+  .spotlight-danger {
+    @apply border-danger/25 text-danger;
+    background-image:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0) 28%),
+      radial-gradient(circle at top right, rgba(239, 68, 68, 0.18), transparent 40%),
+      linear-gradient(180deg, rgba(30, 41, 59, 0.88) 0%, rgba(15, 23, 42, 0.92) 100%);
+  }
+
+  .light .spotlight-primary {
+    background-image:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.24) 28%),
+      radial-gradient(circle at top right, rgba(79, 70, 229, 0.18), transparent 42%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(239, 242, 255, 0.98) 100%);
+  }
+
+  .light .spotlight-secondary {
+    background-image:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.24) 28%),
+      radial-gradient(circle at top right, rgba(147, 51, 234, 0.17), transparent 42%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(247, 242, 255, 0.98) 100%);
+  }
+
+  .light .spotlight-success {
+    background-image:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.24) 28%),
+      radial-gradient(circle at top right, rgba(34, 197, 94, 0.16), transparent 42%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(240, 253, 244, 0.98) 100%);
+  }
+
+  .light .spotlight-danger {
+    background-image:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.24) 28%),
+      radial-gradient(circle at top right, rgba(239, 68, 68, 0.15), transparent 42%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 241, 242, 0.98) 100%);
+  }
+
   .input {
     @apply w-full rounded-2xl border border-border bg-slate-900/70 px-4 py-3 text-sm text-text placeholder:text-muted/80 focus:border-primary;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
@@ -205,6 +301,17 @@
     background-color: rgba(79, 70, 229, 0.08);
   }
 
+  .modal-overlay {
+    @apply fixed inset-0 z-40 flex items-center justify-center p-4 backdrop-blur-sm;
+    background: rgba(2, 6, 23, 0.72);
+  }
+
+  .light .modal-overlay {
+    background:
+      radial-gradient(circle at top, rgba(79, 70, 229, 0.12), transparent 32%),
+      rgba(226, 232, 240, 0.6);
+  }
+
   .metric-card {
     @apply rounded-3xl border border-border bg-slate-900/70 p-5 shadow-card backdrop-blur-sm;
     background-image:
@@ -237,6 +344,7 @@
   }
 
   .light .bg-slate-950\/95,
+  .light .bg-slate-950,
   .light .bg-slate-950\/90,
   .light .bg-slate-950\/80,
   .light .bg-slate-950\/70,
@@ -244,6 +352,7 @@
   .light .bg-slate-950\/55,
   .light .bg-slate-950\/50,
   .light .bg-slate-900\/95,
+  .light .bg-slate-900,
   .light .bg-slate-900\/80,
   .light .bg-slate-900\/70,
   .light .bg-slate-900\/65,
@@ -251,8 +360,28 @@
   .light .bg-slate-900\/55,
   .light .bg-slate-900\/50,
   .light .bg-slate-900\/45,
+  .light .bg-slate-800,
   .light .bg-slate-800\/80 {
     background-color: rgba(255, 255, 255, 0.78) !important;
+  }
+
+  .light .from-slate-900\/75,
+  .light .from-slate-900\/65,
+  .light .from-slate-900\/60,
+  .light .from-slate-950\/65,
+  .light .from-slate-950\/55,
+  .light .from-slate-950\/50 {
+    --tw-gradient-from: rgba(255, 255, 255, 0.94) var(--tw-gradient-from-position) !important;
+    --tw-gradient-to: rgba(255, 255, 255, 0) var(--tw-gradient-to-position) !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+  }
+
+  .light .to-slate-950\/90,
+  .light .to-slate-950\/70,
+  .light .to-slate-950\/55,
+  .light .to-slate-950\/50,
+  .light .to-slate-900\/85 {
+    --tw-gradient-to: rgba(243, 247, 255, 0.96) var(--tw-gradient-to-position) !important;
   }
 
   .light .hover\:bg-slate-800:hover,

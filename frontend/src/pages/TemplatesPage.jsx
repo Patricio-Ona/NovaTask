@@ -132,7 +132,7 @@ export function TemplatesPage() {
 
                 <div className="relative mt-6 space-y-3">
                   {template.templateTasks.slice(0, 3).map((task) => (
-                    <div key={task.id} className="rounded-3xl border border-border bg-slate-900/65 p-4">
+                    <div key={task.id} className="surface-tile">
                       <div className="flex items-center justify-between gap-3">
                         <p className="font-semibold text-text">{task.title}</p>
                         <StatusBadge value={task.priority} />
@@ -187,7 +187,7 @@ export function TemplatesPage() {
             <input className="input" onChange={(e) => setForm((c) => ({ ...c, dueDate: e.target.value }))} type="datetime-local" value={form.dueDate} />
           </label>
 
-          <div className="rounded-3xl border border-border bg-slate-900/55 p-4">
+          <div className="surface-tile">
             <div className="flex flex-wrap gap-2">
               <span className="pill">{selectedTemplate?.templateTasks.length ?? 0} tareas base</span>
               <span className="pill">{selectedTemplate?.templateTasks.filter((task) => task.priority === "HIGH").length ?? 0} alta prioridad</span>
@@ -210,7 +210,7 @@ export function TemplatesPage() {
 
 function StatTile({ label, value }) {
   return (
-    <div className="rounded-[24px] border border-border bg-gradient-to-br from-slate-900/75 to-slate-950/90 p-4 shadow-soft">
+    <div className="surface-tile rounded-[24px]">
       <p className="text-xs uppercase tracking-[0.14em] text-muted">{label}</p>
       <strong className="mt-3 block text-2xl font-semibold text-text">{value}</strong>
     </div>

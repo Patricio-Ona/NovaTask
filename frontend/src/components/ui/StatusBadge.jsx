@@ -1,11 +1,11 @@
 const styles = {
-  TODO: "bg-slate-800 text-muted",
-  IN_PROGRESS: "bg-primary/15 text-primary",
-  REVIEW: "bg-secondary/15 text-secondary",
-  DONE: "bg-success/15 text-success",
-  HIGH: "bg-danger/15 text-danger",
-  MEDIUM: "bg-warning/15 text-warning",
-  LOW: "bg-slate-800 text-muted",
+  TODO: "border border-border bg-surface/75 text-muted shadow-card",
+  IN_PROGRESS: "border border-primary/20 bg-primary/12 text-primary",
+  REVIEW: "border border-secondary/20 bg-secondary/12 text-secondary",
+  DONE: "border border-success/20 bg-success/12 text-success",
+  HIGH: "border border-danger/20 bg-danger/12 text-danger",
+  MEDIUM: "border border-warning/20 bg-warning/12 text-warning",
+  LOW: "border border-border bg-surface/75 text-muted shadow-card",
 };
 
 const labels = {
@@ -20,7 +20,9 @@ const labels = {
 
 export function StatusBadge({ value }) {
   return (
-    <span className={`inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ${styles[value] ?? styles.TODO}`}>
+    <span
+      className={`inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ${styles[value] ?? styles.TODO}`}
+    >
       {labels[value] ?? String(value).replaceAll("_", " ")}
     </span>
   );

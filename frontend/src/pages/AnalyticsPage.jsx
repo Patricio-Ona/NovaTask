@@ -19,10 +19,12 @@ import { PageShell } from "../components/ui/PageShell";
 import { SkeletonCard } from "../components/ui/SkeletonCard";
 import { StatusBadge } from "../components/ui/StatusBadge";
 import { useAsyncData } from "../hooks/useAsyncData";
+import { useAppStore } from "../store/useAppStore";
 
 const chartColors = ["#6366F1", "#8B5CF6", "#22C55E", "#F59E0B"];
 
 export function AnalyticsPage() {
+  const theme = useAppStore((state) => state.theme);
   const { data, loading, error, refetch } = useAsyncData(() => apiGet("/analytics/overview"), []);
 
   if (loading) {
@@ -56,6 +58,14 @@ export function AnalyticsPage() {
     { name: "Completadas", value: data.summary.completionRate },
     { name: "Pendientes", value: 100 - data.summary.completionRate },
   ];
+  const axisColor = theme === "light" ? "#64748B" : "#94A3B8";
+  const gridColor = theme === "light" ? "#D8E1F0" : "#334155";
+  const tooltipStyle = {
+    backgroundColor: theme === "light" ? "rgba(255,255,255,0.96)" : "#0F172A",
+    border: `1px solid ${theme === "light" ? "#D8E1F0" : "#334155"}`,
+    borderRadius: 16,
+    color: theme === "light" ? "#0F172A" : "#F8FAFC",
+  };
 
   return (
     <PageShell
@@ -79,11 +89,11 @@ export function AnalyticsPage() {
           <div className="mt-6 h-[320px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data.byProject}>
-                <CartesianGrid stroke="#334155" strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="name" stroke="#94A3B8" />
-                <YAxis stroke="#94A3B8" />
+                <CartesianGrid stroke={gridColor} strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="name" stroke={axisColor} />
+                <YAxis stroke={axisColor} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: "#0F172A", border: "1px solid #334155", borderRadius: 16 }}
+                  contentStyle={tooltipStyle}
                   cursor={{ fill: "rgba(99,102,241,0.12)" }}
                 />
                 <Bar dataKey="value" fill="#6366F1" radius={[12, 12, 0, 0]} />
@@ -103,7 +113,7 @@ export function AnalyticsPage() {
                     <Cell key={entry.name} fill={chartColors[index]} />
                   ))}
                 </Pie>
-                <Tooltip contentStyle={{ backgroundColor: "#0F172A", border: "1px solid #334155", borderRadius: 16 }} />
+                <Tooltip contentStyle={tooltipStyle} />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -117,10 +127,10 @@ export function AnalyticsPage() {
           <div className="mt-6 h-[320px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data.weeklyProgress}>
-                <CartesianGrid stroke="#334155" strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="label" stroke="#94A3B8" />
-                <YAxis stroke="#94A3B8" />
-                <Tooltip contentStyle={{ backgroundColor: "#0F172A", border: "1px solid #334155", borderRadius: 16 }} />
+                <CartesianGrid stroke={gridColor} strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="label" stroke={axisColor} />
+                <YAxis stroke={axisColor} />
+                <Tooltip contentStyle={tooltipStyle} />
                 <Line dataKey="created" stroke="#8B5CF6" strokeWidth={3} type="monotone" />
                 <Line dataKey="completed" stroke="#22C55E" strokeWidth={3} type="monotone" />
               </LineChart>
@@ -132,7 +142,7 @@ export function AnalyticsPage() {
           <p className="section-kicker">Radar operativo</p>
           <h3 className="mt-3 text-2xl font-semibold text-text">Estado y prioridad del backlog</h3>
           <div className="mt-6 grid gap-4">
-            <div className="rounded-3xl border border-border bg-slate-900/60 p-4">
+            <div className="surface-tile">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">Estado</p>
               <div className="mt-4 space-y-3">
                 {data.statusBreakdown.map((item) => (
@@ -140,7 +150,7 @@ export function AnalyticsPage() {
                 ))}
               </div>
             </div>
-            <div className="rounded-3xl border border-border bg-slate-900/60 p-4">
+            <div className="surface-tile">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">Prioridad</p>
               <div className="mt-4 space-y-3">
                 {data.priorityBreakdown.map((item) => (
@@ -169,7 +179,7 @@ export function AnalyticsPage() {
           <div className="mt-6 space-y-4">
             {data.completionByProject.length ? (
               data.completionByProject.map((project) => (
-                <div key={project.id} className="rounded-3xl border border-border bg-slate-900/65 p-5">
+                <div key={project.id} className="app-card">
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <div className="flex items-center gap-3">
                       <span className="h-3 w-3 rounded-full" style={{ backgroundColor: project.color }} />
@@ -177,7 +187,7 @@ export function AnalyticsPage() {
                     </div>
                     <span className="pill">{project.completionRate}% completado</span>
                   </div>
-                  <div className="mt-4 h-3 overflow-hidden rounded-full bg-slate-800">
+                  <div className="mt-4 h-3 overflow-hidden rounded-full bg-bg/70">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-primary to-secondary"
                       style={{ width: `${project.completionRate}%` }}
@@ -216,7 +226,7 @@ export function AnalyticsPage() {
           <div className="mt-6 space-y-3">
             {data.upcomingDeadlines.length ? (
               data.upcomingDeadlines.map((task) => (
-                <div key={task.id} className="rounded-3xl border border-border bg-slate-900/65 p-4">
+                <div key={task.id} className="surface-tile">
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <div className="flex items-center gap-2">
@@ -261,7 +271,7 @@ function ProgressRow({ label, value, max }) {
         <StatusBadge value={label} />
         <span className="text-sm text-muted">{value}</span>
       </div>
-      <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-800">
+      <div className="mt-2 h-2 overflow-hidden rounded-full bg-bg/70">
         <div className="h-full rounded-full bg-gradient-to-r from-primary to-secondary" style={{ width: `${percent}%` }} />
       </div>
     </div>

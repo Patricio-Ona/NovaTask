@@ -11,9 +11,9 @@ const buttonVariants = cva(
         primary:
           "bg-primary px-4 py-3 text-white shadow-card hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-soft",
         secondary:
-          "border border-border bg-slate-900/70 px-4 py-3 text-text hover:-translate-y-0.5 hover:border-primary/60 hover:bg-slate-800",
-        ghost: "px-4 py-3 text-muted hover:bg-slate-800 hover:text-text",
-        outline: "border border-border bg-transparent px-4 py-3 text-text hover:border-primary/40 hover:bg-slate-900/55",
+          "border border-border bg-surface/70 px-4 py-3 text-text hover:-translate-y-0.5 hover:border-primary/60 hover:bg-surface",
+        ghost: "px-4 py-3 text-muted hover:bg-surface/80 hover:text-text",
+        outline: "border border-border bg-transparent px-4 py-3 text-text hover:border-primary/40 hover:bg-surface/65",
       },
       size: {
         default: "",

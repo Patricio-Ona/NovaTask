@@ -149,12 +149,27 @@ Servicios:
 
 GitHub Pages requiere `HashRouter` para evitar problemas de rutas:
 
-1. Construye el frontend con:
+1. El repositorio ya incluye el workflow [deploy-pages.yml](/C:/Users/59396/Documents/Codex/2026-04-20-files-mentioned-by-the-user-plan/.github/workflows/deploy-pages.yml).
+2. En GitHub ve a `Settings > Pages`.
+3. En `Build and deployment`, selecciona `GitHub Actions`.
+4. En `Settings > Secrets and variables > Actions > Variables`, crea:
    - `VITE_API_URL=https://tu-backend.onrender.com/api`
+5. El workflow ya construye con:
    - `VITE_ROUTER_MODE=hash`
-   - `VITE_APP_BASE_PATH=/`
-2. Publica el contenido de `frontend/dist`.
-3. El proyecto ya incluye `frontend/public/.nojekyll`.
+   - `VITE_APP_BASE_PATH=/NovaTask/`
+6. Cada `push` a `main` publicara el frontend automaticamente.
+7. El proyecto ya incluye `frontend/public/.nojekyll`.
+
+URL esperada:
+
+```text
+https://patricio-ona.github.io/NovaTask/
+```
+
+Nota:
+
+- `GitHub Pages` solo publica el frontend.
+- Para que el sistema funcione completo, el backend debe seguir desplegado en `Render` o `Railway`.
 
 ### Backend en Render
 

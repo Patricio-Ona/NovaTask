@@ -4,7 +4,6 @@ import { formatDate } from "../lib/formatters";
 import { useAsyncData } from "../hooks/useAsyncData";
 import { useAppStore } from "../store/useAppStore";
 import { Button } from "../components/ui/Button";
-import { EmptyState } from "../components/ui/EmptyState";
 import { PageShell } from "../components/ui/PageShell";
 import { SkeletonCard } from "../components/ui/SkeletonCard";
 import { StatusBadge } from "../components/ui/StatusBadge";
@@ -179,15 +178,21 @@ export function CalendarPage() {
 
   if (error) {
     return (
-      <EmptyState
-        action={
-          <Button onClick={() => refetch().catch(() => {})} variant="primary">
-            Reintentar
-          </Button>
-        }
-        description={error.message}
-        title="No se pudo cargar el calendario"
-      />
+      <PageShell
+        description="No fue posible consultar tu agenda. Puedes volver a intentarlo sin salir de esta vista."
+        kicker="Planeacion academica"
+        title="Calendario operativo"
+      >
+        <div className="panel p-6">
+          <p className="text-base font-semibold text-text">No se pudo cargar el calendario</p>
+          <p className="mt-2 text-sm text-muted">{error.message}</p>
+          <div className="mt-4">
+            <Button onClick={() => refetch().catch(() => {})} variant="primary">
+              Reintentar
+            </Button>
+          </div>
+        </div>
+      </PageShell>
     );
   }
 
@@ -225,240 +230,154 @@ export function CalendarPage() {
       kicker="Planeacion academica"
       title="Calendario operativo"
     >
-      {!normalizedItems.length ? (
-        <EmptyState
-          description="Cuando las tareas o eventos tengan fecha, apareceran aqui para planificar la semana y el mes."
-          title="No hay actividad programada"
-        />
-      ) : (
-        <>
-          <section className="grid gap-5 xl:grid-cols-5">
-            <Stat title="Elementos con fecha" value={summary.total} />
-            <Stat title="Tareas" value={summary.tasks} />
-            <Stat title="Eventos" value={summary.events} />
-            <Stat title="Proximos 7 dias" value={summary.dueThisWeek} />
-            <Stat title="Completadas" value={summary.completed} />
-          </section>
+      <>
+        <section className="grid gap-5 xl:grid-cols-5">
+          <Stat title="Elementos con fecha" value={summary.total} />
+          <Stat title="Tareas" value={summary.tasks} />
+          <Stat title="Eventos" value={summary.events} />
+          <Stat title="Proximos 7 dias" value={summary.dueThisWeek} />
+          <Stat title="Completadas" value={summary.completed} />
+        </section>
 
+        {!normalizedItems.length ? (
           <section className="panel p-4 sm:p-6">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
               <div>
-                <p className="section-kicker">Vista activa</p>
-                <h2 className="mt-2 text-2xl font-semibold text-text">
-                  {calendarView === "month" ? "Calendario mensual" : "Calendario semanal"}
-                </h2>
+                <p className="section-kicker">Agenda disponible</p>
+                <h2 className="mt-2 text-2xl font-semibold text-text">Tu calendario ya esta listo</h2>
+                <p className="mt-2 text-sm leading-6 text-muted">
+                  Aun no existen tareas o eventos con fecha, pero ya puedes navegar el mes y la semana para empezar a planificar.
+                </p>
               </div>
-              <Tabs value={calendarView} onValueChange={setCalendarView}>
-                <TabsList>
-                  <TabsTrigger value="month">Mensual</TabsTrigger>
-                  <TabsTrigger value="week">Semanal</TabsTrigger>
-                </TabsList>
-              </Tabs>
+              <span className="pill">Sin actividad registrada</span>
             </div>
           </section>
+        ) : null}
 
-          {calendarView === "month" ? (
-            <section className="grid gap-5 xl:grid-cols-[1.15fr,0.85fr]">
-              <article className="panel p-6">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <section className="panel p-4 sm:p-6">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="section-kicker">Vista activa</p>
+              <h2 className="mt-2 text-2xl font-semibold text-text">
+                {calendarView === "month" ? "Calendario mensual" : "Calendario semanal"}
+              </h2>
+            </div>
+            <Tabs value={calendarView} onValueChange={setCalendarView}>
+              <TabsList>
+                <TabsTrigger value="month">Mensual</TabsTrigger>
+                <TabsTrigger value="week">Semanal</TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
+        </section>
+
+        {calendarView === "month" ? (
+          <section className="grid gap-5 xl:grid-cols-[1.15fr,0.85fr]">
+            <article className="panel p-6">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                <div>
+                  <p className="section-kicker">Vista mensual</p>
+                  <h3 className="mt-3 text-3xl font-semibold text-text">
+                    {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
+                  </h3>
+                </div>
+                <div className="rounded-2xl border border-border bg-slate-900/65 px-4 py-3 text-sm text-muted">
+                  {monthDays.filter((day) => day.items.length).length} dias con actividad
+                </div>
+              </div>
+
+              <div className="mt-6 rounded-3xl border border-border bg-slate-950/35 p-4">
+                <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                   <div>
-                    <p className="section-kicker">Vista mensual</p>
-                    <h3 className="mt-3 text-3xl font-semibold text-text">
-                      {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
-                    </h3>
+                    <p className="text-sm font-semibold text-text">Calendario completo del mes</p>
+                    <p className="mt-1 text-sm text-muted">
+                      Las fechas con tareas o eventos aparecen pintadas automaticamente para que identifiques la carga academica de un vistazo.
+                    </p>
                   </div>
-                  <div className="rounded-2xl border border-border bg-slate-900/65 px-4 py-3 text-sm text-muted">
-                    {monthDays.filter((day) => day.items.length).length} dias con actividad
-                  </div>
-                </div>
-
-                <div className="mt-6 rounded-3xl border border-border bg-slate-950/35 p-4">
-                  <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-                    <div>
-                      <p className="text-sm font-semibold text-text">Calendario completo del mes</p>
-                      <p className="mt-1 text-sm text-muted">
-                        Las fechas con tareas o eventos aparecen pintadas automaticamente para que identifiques la carga academica de un vistazo.
-                      </p>
-                    </div>
-                    <div className="flex flex-wrap gap-2 text-xs uppercase tracking-[0.14em] text-muted">
-                      <span className="inline-flex items-center gap-2 rounded-full border border-border bg-slate-900/65 px-3 py-2">
-                        <span className="h-2.5 w-2.5 rounded-full bg-primary" />
-                        Fecha con actividad
-                      </span>
-                      <span className="inline-flex items-center gap-2 rounded-full border border-border bg-slate-900/65 px-3 py-2">
-                        <span className="h-2.5 w-2.5 rounded-full bg-secondary" />
-                        Dia actual
-                      </span>
-                    </div>
+                  <div className="flex flex-wrap gap-2 text-xs uppercase tracking-[0.14em] text-muted">
+                    <span className="inline-flex items-center gap-2 rounded-full border border-border bg-slate-900/65 px-3 py-2">
+                      <span className="h-2.5 w-2.5 rounded-full bg-primary" />
+                      Fecha con actividad
+                    </span>
+                    <span className="inline-flex items-center gap-2 rounded-full border border-border bg-slate-900/65 px-3 py-2">
+                      <span className="h-2.5 w-2.5 rounded-full bg-secondary" />
+                      Dia actual
+                    </span>
                   </div>
                 </div>
+              </div>
 
-                <div className="mt-3 overflow-x-auto pb-1">
-                  <div className="min-w-[760px]">
-                    <div className="grid grid-cols-7 gap-2 text-center text-xs font-semibold uppercase tracking-[0.16em] text-muted">
-                      {weekDays.map((day) => (
-                        <div key={day} className="rounded-2xl border border-border bg-slate-900/45 px-2 py-3">
-                          {day}
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="mt-3 grid grid-cols-7 gap-2">
-                      {monthDays.map((day) => {
-                        const inCurrentMonth = day.date.getMonth() === currentMonth.getMonth();
-                        const isSelected = isSameDay(day.date, selectedDate);
-                        const isToday = isSameDay(day.date, new Date());
-                        const activity = getActivityMeta(day.items);
-
-                        return (
-                          <button
-                            key={day.date.toISOString()}
-                            className={`relative min-h-[140px] overflow-hidden rounded-3xl border p-3 text-left transition ${
-                              isSelected
-                                ? "border-primary/55 shadow-[0_18px_45px_rgba(99,102,241,0.18)]"
-                                : activity.total
-                                  ? "border-white/10 bg-slate-900/72 hover:border-primary/35"
-                                  : "border-border bg-slate-900/55 hover:border-primary/25"
-                            } ${inCurrentMonth ? "text-text" : "text-muted/55"}`}
-                            onClick={() => setSelectedDate(startOfDay(day.date))}
-                            type="button"
-                          >
-                            {activity.total ? <div className="absolute inset-0" style={activity.surfaceStyle} /> : null}
-                            {isSelected ? <div className="absolute inset-0 bg-primary/10" /> : null}
-
-                            <div className="relative z-10 flex h-full flex-col">
-                              <div className="flex items-center justify-between gap-2">
-                                <span
-                                  className={`inline-flex min-w-[2.2rem] items-center justify-center rounded-full px-2.5 py-1 text-sm font-semibold ${
-                                    isToday
-                                      ? "bg-secondary/25 text-secondary"
-                                      : activity.total
-                                        ? "text-white"
-                                        : ""
-                                  }`}
-                                  style={
-                                    !isToday && activity.total
-                                      ? {
-                                          backgroundColor: `${activity.accent}26`,
-                                          boxShadow: `inset 0 0 0 1px ${activity.accent}45`,
-                                        }
-                                      : undefined
-                                  }
-                                >
-                                  {day.date.getDate()}
-                                </span>
-                                {activity.total ? (
-                                  <span className="pill border-white/10 bg-slate-950/55 text-text">{activity.total}</span>
-                                ) : null}
-                              </div>
-
-                              <div className="mt-3 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted">
-                                <span>{dayLabel(day.date)}</span>
-                                {activity.total ? (
-                                  <>
-                                    <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: activity.accent }} />
-                                    <span>Activo</span>
-                                  </>
-                                ) : null}
-                              </div>
-
-                              <div className="mt-3 space-y-2">
-                                {day.items.slice(0, 2).map((item) => (
-                                  <div
-                                    key={item.id}
-                                    className="rounded-2xl px-3 py-2 text-[11px] font-semibold backdrop-blur-sm"
-                                    style={{
-                                      backgroundColor: `${item.color ?? item.projectColor ?? defaultActivityColor}20`,
-                                      color: item.color ?? item.projectColor ?? defaultActivityColor,
-                                    }}
-                                  >
-                                    {item.title}
-                                  </div>
-                                ))}
-                              </div>
-
-                              <div className="mt-auto pt-4">
-                                {day.items.length > 2 ? (
-                                  <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">+{day.items.length - 2} mas</p>
-                                ) : null}
-                                {activity.total ? (
-                                  <div className="mt-2 flex flex-wrap items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-200/85">
-                                    {activity.tasks ? <span className="rounded-full bg-slate-950/45 px-2 py-1">{activity.tasks} tareas</span> : null}
-                                    {activity.events ? <span className="rounded-full bg-slate-950/45 px-2 py-1">{activity.events} eventos</span> : null}
-                                  </div>
-                                ) : (
-                                  <p className="text-[11px] text-muted">Sin actividad</p>
-                                )}
-                              </div>
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
+              <div className="mt-3 overflow-x-auto pb-1">
+                <div className="min-w-[760px]">
+                  <div className="grid grid-cols-7 gap-2 text-center text-xs font-semibold uppercase tracking-[0.16em] text-muted">
+                    {weekDays.map((day) => (
+                      <div key={day} className="rounded-2xl border border-border bg-slate-900/45 px-2 py-3">
+                        {day}
+                      </div>
+                    ))}
                   </div>
-                </div>
-              </article>
 
-              <DayAgenda items={selectedItems} title={formatDate(selectedDate.toISOString(), { withYear: true })} />
-            </section>
-          ) : (
-            <section className="grid gap-5 xl:grid-cols-[1.15fr,0.85fr]">
-              <article className="panel p-6">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-                  <div>
-                    <p className="section-kicker">Vista semanal</p>
-                    <h3 className="mt-3 text-3xl font-semibold text-text">Semana en curso</h3>
-                  </div>
-                  <div className="rounded-2xl border border-border bg-slate-900/65 px-4 py-3 text-sm text-muted">
-                    {weekDaysData.reduce((sum, day) => sum + day.items.length, 0)} elementos programados
-                  </div>
-                </div>
+                  <div className="mt-3 grid grid-cols-7 gap-2">
+                    {monthDays.map((day) => {
+                      const inCurrentMonth = day.date.getMonth() === currentMonth.getMonth();
+                      const isSelected = isSameDay(day.date, selectedDate);
+                      const isToday = isSameDay(day.date, new Date());
+                      const activity = getActivityMeta(day.items);
 
-                <div className="mt-6 grid gap-3 lg:grid-cols-7">
-                  {weekDaysData.map((day) => {
-                    const activity = getActivityMeta(day.items);
+                      return (
+                        <button
+                          key={day.date.toISOString()}
+                          className={`relative min-h-[140px] overflow-hidden rounded-3xl border p-3 text-left transition ${
+                            isSelected
+                              ? "border-primary/55 shadow-[0_18px_45px_rgba(99,102,241,0.18)]"
+                              : activity.total
+                                ? "border-white/10 bg-slate-900/72 hover:border-primary/35"
+                                : "border-border bg-slate-900/55 hover:border-primary/25"
+                          } ${inCurrentMonth ? "text-text" : "text-muted/55"}`}
+                          onClick={() => setSelectedDate(startOfDay(day.date))}
+                          type="button"
+                        >
+                          {activity.total ? <div className="absolute inset-0" style={activity.surfaceStyle} /> : null}
+                          {isSelected ? <div className="absolute inset-0 bg-primary/10" /> : null}
 
-                    return (
-                      <button
-                        key={day.date.toISOString()}
-                        className={`relative overflow-hidden rounded-3xl border p-4 text-left transition ${
-                          isSameDay(day.date, selectedDate)
-                            ? "border-primary/50 bg-primary/12 shadow-[0_18px_45px_rgba(99,102,241,0.16)]"
-                            : activity.total
-                              ? "border-white/10 bg-slate-900/72 hover:border-primary/30"
-                              : "border-border bg-slate-900/55 hover:border-primary/25"
-                        }`}
-                        onClick={() => setSelectedDate(startOfDay(day.date))}
-                        type="button"
-                      >
-                        {activity.total ? <div className="absolute inset-0" style={activity.surfaceStyle} /> : null}
-
-                        <div className="relative z-10">
-                          <div className="flex items-center justify-between gap-3">
-                            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">{dayLabel(day.date)}</p>
-                            {activity.total ? (
-                              <span className="inline-flex items-center gap-1 rounded-full bg-slate-950/45 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-200/85">
-                                <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: activity.accent }} />
-                                Actividad
+                          <div className="relative z-10 flex h-full flex-col">
+                            <div className="flex items-center justify-between gap-2">
+                              <span
+                                className={`inline-flex min-w-[2.2rem] items-center justify-center rounded-full px-2.5 py-1 text-sm font-semibold ${
+                                  isToday
+                                    ? "bg-secondary/25 text-secondary"
+                                    : activity.total
+                                      ? "text-white"
+                                      : ""
+                                }`}
+                                style={
+                                  !isToday && activity.total
+                                    ? {
+                                        backgroundColor: `${activity.accent}26`,
+                                        boxShadow: `inset 0 0 0 1px ${activity.accent}45`,
+                                      }
+                                    : undefined
+                                }
+                              >
+                                {day.date.getDate()}
                               </span>
-                            ) : null}
-                          </div>
-                          <p
-                            className="mt-2 inline-flex rounded-full px-3 py-1 text-lg font-semibold text-text"
-                            style={
-                              activity.total
-                                ? {
-                                    backgroundColor: `${activity.accent}20`,
-                                    boxShadow: `inset 0 0 0 1px ${activity.accent}40`,
-                                  }
-                                : undefined
-                            }
-                          >
-                            {day.date.getDate()}
-                          </p>
-                          <div className="mt-4 space-y-2">
-                            {day.items.length ? (
-                              day.items.slice(0, 3).map((item) => (
+                              {activity.total ? (
+                                <span className="pill border-white/10 bg-slate-950/55 text-text">{activity.total}</span>
+                              ) : null}
+                            </div>
+
+                            <div className="mt-3 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted">
+                              <span>{dayLabel(day.date)}</span>
+                              {activity.total ? (
+                                <>
+                                  <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: activity.accent }} />
+                                  <span>Activo</span>
+                                </>
+                              ) : null}
+                            </div>
+
+                            <div className="mt-3 space-y-2">
+                              {day.items.slice(0, 2).map((item) => (
                                 <div
                                   key={item.id}
                                   className="rounded-2xl px-3 py-2 text-[11px] font-semibold backdrop-blur-sm"
@@ -469,23 +388,175 @@ export function CalendarPage() {
                                 >
                                   {item.title}
                                 </div>
-                              ))
-                            ) : (
-                              <p className="text-xs text-muted">Sin actividad</p>
-                            )}
-                          </div>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </article>
+                              ))}
+                            </div>
 
-              <DayAgenda items={selectedItems} title={formatDate(selectedDate.toISOString(), { withYear: true })} />
-            </section>
-          )}
-        </>
-      )}
+                            <div className="mt-auto pt-4">
+                              {day.items.length > 2 ? (
+                                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">+{day.items.length - 2} mas</p>
+                              ) : null}
+                              {activity.total ? (
+                                <div className="mt-2 flex flex-wrap items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-200/85">
+                                  {activity.tasks ? <span className="rounded-full bg-slate-950/45 px-2 py-1">{activity.tasks} tareas</span> : null}
+                                  {activity.events ? <span className="rounded-full bg-slate-950/45 px-2 py-1">{activity.events} eventos</span> : null}
+                                </div>
+                              ) : (
+                                <p className="text-[11px] text-muted">Sin actividad</p>
+                              )}
+                            </div>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <DayAgenda items={selectedItems} title={formatDate(selectedDate.toISOString(), { withYear: true })} />
+          </section>
+        ) : (
+          <section className="grid gap-5 xl:grid-cols-[1.15fr,0.85fr]">
+            <article className="panel p-6">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                <div>
+                  <p className="section-kicker">Vista semanal</p>
+                  <h3 className="mt-3 text-3xl font-semibold text-text">Semana en curso</h3>
+                </div>
+                <div className="rounded-2xl border border-border bg-slate-900/65 px-4 py-3 text-sm text-muted">
+                  {weekDaysData.reduce((sum, day) => sum + day.items.length, 0)} elementos programados
+                </div>
+              </div>
+
+              <div className="mt-6 rounded-3xl border border-border bg-slate-950/35 p-4">
+                <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-text">Lectura semanal continua</p>
+                    <p className="mt-1 text-sm text-muted">
+                      La semana permanece visible aunque aun no tengas actividad. Cuando registres tareas o eventos, el dia se resalta automaticamente.
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2 text-xs uppercase tracking-[0.14em] text-muted">
+                    <span className="inline-flex items-center gap-2 rounded-full border border-border bg-slate-900/65 px-3 py-2">
+                      <span className="h-2.5 w-2.5 rounded-full bg-primary" />
+                      Dia seleccionado
+                    </span>
+                    <span className="inline-flex items-center gap-2 rounded-full border border-border bg-slate-900/65 px-3 py-2">
+                      <span className="h-2.5 w-2.5 rounded-full bg-success" />
+                      Actividad programada
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-3 overflow-x-auto pb-1">
+                <div className="min-w-[920px]">
+                  <div className="grid grid-cols-7 gap-3">
+                    {weekDaysData.map((day) => {
+                      const activity = getActivityMeta(day.items);
+                      const isSelected = isSameDay(day.date, selectedDate);
+                      const isToday = isSameDay(day.date, new Date());
+
+                      return (
+                        <button
+                          key={day.date.toISOString()}
+                          className={`relative min-h-[232px] overflow-hidden rounded-3xl border p-4 text-left transition ${
+                            isSelected
+                              ? "border-primary/50 bg-primary/12 shadow-[0_18px_45px_rgba(99,102,241,0.16)]"
+                              : activity.total
+                                ? "border-white/10 bg-slate-900/72 hover:border-primary/30"
+                                : "border-border bg-slate-900/55 hover:border-primary/25"
+                          }`}
+                          onClick={() => setSelectedDate(startOfDay(day.date))}
+                          type="button"
+                        >
+                          {activity.total ? <div className="absolute inset-0" style={activity.surfaceStyle} /> : null}
+                          {isSelected ? <div className="absolute inset-0 bg-primary/8" /> : null}
+
+                          <div className="relative z-10 flex h-full flex-col">
+                            <div className="flex items-start justify-between gap-3">
+                              <div>
+                                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">{dayLabel(day.date)}</p>
+                                <p
+                                  className={`mt-3 inline-flex min-w-[3rem] items-center justify-center rounded-full px-3 py-2 text-2xl font-semibold ${
+                                    isToday ? "bg-secondary/20 text-secondary" : "text-text"
+                                  }`}
+                                  style={
+                                    !isToday && activity.total
+                                      ? {
+                                          backgroundColor: `${activity.accent}20`,
+                                          boxShadow: `inset 0 0 0 1px ${activity.accent}40`,
+                                        }
+                                      : undefined
+                                  }
+                                >
+                                  {day.date.getDate()}
+                                </p>
+                              </div>
+
+                              <div className="flex flex-col items-end gap-2">
+                                {activity.total ? (
+                                  <span className="pill border-white/10 bg-slate-950/55 text-text">{activity.total}</span>
+                                ) : (
+                                  <span className="pill">0</span>
+                                )}
+                                {activity.total ? (
+                                  <span className="inline-flex items-center gap-1 rounded-full bg-slate-950/45 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-200/85">
+                                    <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: activity.accent }} />
+                                    Activo
+                                  </span>
+                                ) : null}
+                              </div>
+                            </div>
+
+                            <div className="mt-4 space-y-2">
+                              {day.items.length ? (
+                                day.items.slice(0, 2).map((item) => (
+                                  <div
+                                    key={item.id}
+                                    className="rounded-2xl px-3 py-2 text-[11px] font-semibold leading-5 backdrop-blur-sm"
+                                    style={{
+                                      backgroundColor: `${item.color ?? item.projectColor ?? defaultActivityColor}20`,
+                                      color: item.color ?? item.projectColor ?? defaultActivityColor,
+                                    }}
+                                  >
+                                    {item.title}
+                                  </div>
+                                ))
+                              ) : (
+                                <div className="rounded-2xl border border-dashed border-border/80 px-3 py-4 text-xs leading-5 text-muted">
+                                  No hay actividad programada para este dia.
+                                </div>
+                              )}
+                            </div>
+
+                            <div className="mt-auto pt-4">
+                              {day.items.length > 2 ? (
+                                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">+{day.items.length - 2} mas</p>
+                              ) : null}
+
+                              {activity.total ? (
+                                <div className="mt-2 flex flex-wrap gap-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-200/85">
+                                  {activity.tasks ? <span className="rounded-full bg-slate-950/45 px-2 py-1">{activity.tasks} tareas</span> : null}
+                                  {activity.events ? <span className="rounded-full bg-slate-950/45 px-2 py-1">{activity.events} eventos</span> : null}
+                                </div>
+                              ) : (
+                                <p className="text-[11px] text-muted">Espacio libre para planificar</p>
+                              )}
+                            </div>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <DayAgenda items={selectedItems} title={formatDate(selectedDate.toISOString(), { withYear: true })} />
+          </section>
+        )}
+      </>
     </PageShell>
   );
 }

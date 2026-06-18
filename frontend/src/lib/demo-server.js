@@ -77,8 +77,206 @@ const getDefaultState = () => {
   const urgentTagId = createId("tag");
   const researchTagId = createId("tag");
   const uiTagId = createId("tag");
-  const examTemplateId = createId("template");
-  const sprintTemplateId = createId("template");
+  const templateDefinitions = [
+    {
+      id: createId("template"),
+      name: "Semana de examenes",
+      description: "Planifica repaso, entregas y bloques de estudio intensivo.",
+      color: "#6366F1",
+      createdAt: addDays(now, -15).toISOString(),
+      tasks: [
+        {
+          title: "Registrar fechas de examen",
+          description: "Cargar evaluaciones, entregables y fechas criticas del periodo.",
+          priority: "HIGH",
+          status: "TODO",
+        },
+        {
+          title: "Bloques de estudio por materia",
+          description: "Separar sesiones de repaso segun dificultad y prioridad.",
+          priority: "MEDIUM",
+          status: "TODO",
+        },
+        {
+          title: "Checklist diario de repaso",
+          description: "Revisar avances, temas pendientes y resultados del dia.",
+          priority: "MEDIUM",
+          status: "TODO",
+        },
+        {
+          title: "Simulacion final",
+          description: "Resolver ejercicios o preguntas tipo antes del examen.",
+          priority: "MEDIUM",
+          status: "REVIEW",
+        },
+      ],
+    },
+    {
+      id: createId("template"),
+      name: "Proyecto grupal",
+      description: "Coordina roles, entregables y seguimiento del equipo.",
+      color: "#8B5CF6",
+      createdAt: addDays(now, -14).toISOString(),
+      tasks: [
+        {
+          title: "Definir integrantes y roles",
+          description: "Asignar responsables y tiempos de respuesta.",
+          priority: "HIGH",
+          status: "TODO",
+        },
+        {
+          title: "Crear cronograma comun",
+          description: "Ordenar hitos, reuniones y entregas parciales.",
+          priority: "MEDIUM",
+          status: "TODO",
+        },
+        {
+          title: "Reunir fuentes y material base",
+          description: "Consolidar archivos, bibliografia y recursos de trabajo.",
+          priority: "MEDIUM",
+          status: "TODO",
+        },
+        {
+          title: "Reunion de avance",
+          description: "Verificar bloqueos y siguientes pasos del equipo.",
+          priority: "MEDIUM",
+          status: "IN_PROGRESS",
+        },
+      ],
+    },
+    {
+      id: createId("template"),
+      name: "Trabajo final",
+      description: "Estructura una entrega completa desde la investigacion hasta la revision.",
+      color: "#22C55E",
+      createdAt: addDays(now, -13).toISOString(),
+      tasks: [
+        {
+          title: "Definir alcance y tema",
+          description: "Aclarar objetivo, entregable y criterios de evaluacion.",
+          priority: "HIGH",
+          status: "TODO",
+        },
+        {
+          title: "Reunir bibliografia",
+          description: "Seleccionar fuentes y material base para el documento.",
+          priority: "MEDIUM",
+          status: "TODO",
+        },
+        {
+          title: "Redactar borrador",
+          description: "Preparar una primera version del trabajo.",
+          priority: "MEDIUM",
+          status: "TODO",
+        },
+        {
+          title: "Revision final",
+          description: "Corregir formato, ortografia y anexos.",
+          priority: "MEDIUM",
+          status: "REVIEW",
+        },
+      ],
+    },
+    {
+      id: createId("template"),
+      name: "Semana productiva",
+      description: "Organiza una semana equilibrada con clases, entregas y repasos.",
+      color: "#F59E0B",
+      createdAt: addDays(now, -12).toISOString(),
+      tasks: [
+        {
+          title: "Definir tres prioridades",
+          description: "Elegir lo mas importante de la semana.",
+          priority: "HIGH",
+          status: "TODO",
+        },
+        {
+          title: "Bloques de enfoque",
+          description: "Reservar tiempo profundo para avanzar sin interrupciones.",
+          priority: "MEDIUM",
+          status: "TODO",
+        },
+        {
+          title: "Revision a mitad de semana",
+          description: "Comprobar si el ritmo actual es suficiente.",
+          priority: "MEDIUM",
+          status: "IN_PROGRESS",
+        },
+        {
+          title: "Cierre semanal",
+          description: "Revisar logros y planificar lo siguiente.",
+          priority: "MEDIUM",
+          status: "TODO",
+        },
+      ],
+    },
+    {
+      id: createId("template"),
+      name: "Seguimiento de tesis",
+      description: "Ordena avances, revisiones y entregables del trabajo de titulacion.",
+      color: "#0EA5E9",
+      createdAt: addDays(now, -11).toISOString(),
+      tasks: [
+        {
+          title: "Actualizar objetivos",
+          description: "Revisar alcance, entregables y observaciones pendientes.",
+          priority: "HIGH",
+          status: "TODO",
+        },
+        {
+          title: "Avance de redaccion",
+          description: "Registrar progreso por capitulo o seccion.",
+          priority: "MEDIUM",
+          status: "IN_PROGRESS",
+        },
+        {
+          title: "Ajustar producto o prototipo",
+          description: "Corregir la parte tecnica antes del siguiente avance.",
+          priority: "MEDIUM",
+          status: "TODO",
+        },
+        {
+          title: "Enviar para revision",
+          description: "Compartir avances con tutor o lector.",
+          priority: "MEDIUM",
+          status: "REVIEW",
+        },
+      ],
+    },
+    {
+      id: createId("template"),
+      name: "Presentacion oral",
+      description: "Prepara una exposicion clara con guion, diapositivas y practica.",
+      color: "#EC4899",
+      createdAt: addDays(now, -10).toISOString(),
+      tasks: [
+        {
+          title: "Definir estructura",
+          description: "Ordenar introduccion, desarrollo y cierre.",
+          priority: "HIGH",
+          status: "TODO",
+        },
+        {
+          title: "Preparar diapositivas",
+          description: "Sintetizar ideas clave con apoyo visual.",
+          priority: "MEDIUM",
+          status: "TODO",
+        },
+        {
+          title: "Ensayo con tiempo real",
+          description: "Practicar la presentacion respetando el tiempo disponible.",
+          priority: "MEDIUM",
+          status: "TODO",
+        },
+        {
+          title: "Ajustes finales de discurso",
+          description: "Pulir seguridad al hablar y responder preguntas.",
+          priority: "MEDIUM",
+          status: "REVIEW",
+        },
+      ],
+    },
+  ];
 
   const tasks = [
     {
@@ -205,64 +403,19 @@ const getDefaultState = () => {
       { id: createId("log"), userId, action: "TASK_MOVED", entityType: "TASK", entityId: dashboardTask.id, createdAt: addDays(now, -1).toISOString() },
       { id: createId("log"), userId, action: "DOCUMENT_READY", entityType: "TASK", entityId: thesisDoneTask.id, createdAt: addDays(now, -2).toISOString() },
     ],
-    templates: [
-      {
-        id: examTemplateId,
-        name: "Semana de examenes",
-        description: "Bloques de estudio, checklist diario y control de fechas criticas.",
-        color: "#6366F1",
-        createdAt: addDays(now, -15).toISOString(),
-      },
-      {
-        id: sprintTemplateId,
-        name: "Sprint de tesis",
-        description: "Mini plan de avance para redaccion, UI, backend y validacion.",
-        color: "#8B5CF6",
-        createdAt: addDays(now, -10).toISOString(),
-      },
-    ],
-    templateTasks: [
-      {
+    templates: templateDefinitions.map(({ tasks: templateTasks, ...template }) => template),
+    templateTasks: templateDefinitions.flatMap((template) =>
+      template.tasks.map((task, index) => ({
         id: createId("template-task"),
-        templateId: examTemplateId,
-        title: "Registrar fechas de examen",
-        description: "Cargar evaluaciones y entregables del periodo.",
-        priority: "HIGH",
-        status: "TODO",
-        position: 0,
-        createdAt: addDays(now, -15).toISOString(),
-      },
-      {
-        id: createId("template-task"),
-        templateId: examTemplateId,
-        title: "Bloques de estudio por materia",
-        description: "Separar sesiones de repaso segun prioridad.",
-        priority: "MEDIUM",
-        status: "TODO",
-        position: 1,
-        createdAt: addDays(now, -15).toISOString(),
-      },
-      {
-        id: createId("template-task"),
-        templateId: sprintTemplateId,
-        title: "Redaccion de avance",
-        description: "Actualizar documento y hallazgos del proyecto.",
-        priority: "HIGH",
-        status: "TODO",
-        position: 0,
-        createdAt: addDays(now, -10).toISOString(),
-      },
-      {
-        id: createId("template-task"),
-        templateId: sprintTemplateId,
-        title: "Validar frontend",
-        description: "Revisar rutas, formularios y modales del MVP.",
-        priority: "MEDIUM",
-        status: "TODO",
-        position: 1,
-        createdAt: addDays(now, -10).toISOString(),
-      },
-    ],
+        templateId: template.id,
+        title: task.title,
+        description: task.description,
+        priority: task.priority,
+        status: task.status,
+        position: index + 1,
+        createdAt: template.createdAt,
+      }))
+    ),
     meta: {
       currentYear,
     },

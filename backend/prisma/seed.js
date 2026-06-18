@@ -1,6 +1,7 @@
 import "dotenv/config";
 import bcrypt from "bcryptjs";
 import { EventType, PrismaClient, TaskPriority, TaskStatus } from "@prisma/client";
+import { defaultTemplateCatalog } from "../src/data/default-templates.js";
 
 const prisma = new PrismaClient();
 
@@ -261,55 +262,9 @@ async function main() {
     ],
   });
 
-  await createTemplate("Semana de examenes", "Planifica repaso, entregas y bloques de estudio intensivo.", "#6366F1", [
-    {
-      title: "Registrar fechas de examen",
-      description: "Cargar las fechas clave del periodo.",
-      priority: TaskPriority.HIGH,
-    },
-    {
-      title: "Bloques de estudio por materia",
-      description: "Organizar sesiones por asignatura.",
-    },
-    {
-      title: "Checklist diario de repaso",
-      description: "Seguimiento del progreso academico diario.",
-    },
-  ]);
-
-  await createTemplate("Proyecto grupal", "Coordina roles, entregables y seguimiento del equipo.", "#8B5CF6", [
-    {
-      title: "Definir integrantes y roles",
-      description: "Acordar responsables y tiempos.",
-      priority: TaskPriority.HIGH,
-    },
-    {
-      title: "Crear cronograma comun",
-      description: "Distribuir hitos por semana.",
-    },
-    {
-      title: "Reunion de avance",
-      description: "Revisar bloqueos y siguientes pasos.",
-      status: TaskStatus.IN_PROGRESS,
-    },
-  ]);
-
-  await createTemplate("Semana de titulacion", "Ordena entregables, reuniones, revisiones y practicas de defensa.", "#22C55E", [
-    {
-      title: "Actualizar capitulo pendiente",
-      description: "Avanzar redaccion y correcciones.",
-      priority: TaskPriority.HIGH,
-    },
-    {
-      title: "Reunion con tutor",
-      description: "Resolver observaciones y siguientes pasos.",
-      status: TaskStatus.REVIEW,
-    },
-    {
-      title: "Practicar defensa",
-      description: "Ensayar presentacion con tiempo real.",
-    },
-  ]);
+  for (const template of defaultTemplateCatalog) {
+    await createTemplate(template.name, template.description, template.color, template.tasks);
+  }
 
   await prisma.activityLog.createMany({
     data: [

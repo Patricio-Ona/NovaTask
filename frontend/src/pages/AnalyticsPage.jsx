@@ -35,6 +35,7 @@ const sectionAccents = {
 
 export function AnalyticsPage() {
   const theme = useAppStore((state) => state.theme);
+  const isLight = theme === "light";
   const { data, loading, error, refetch } = useAsyncData(() => apiGet("/analytics/overview"), []);
 
   if (loading) {
@@ -123,7 +124,14 @@ export function AnalyticsPage() {
       title="Analiticas personales"
     >
       <section className="panel relative overflow-hidden p-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.24),transparent_34%),radial-gradient(circle_at_top_right,rgba(236,72,153,0.22),transparent_28%),radial-gradient(circle_at_bottom,rgba(14,165,233,0.16),transparent_34%)]" />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: isLight
+              ? "radial-gradient(circle at top left, rgba(79, 70, 229, 0.12), transparent 34%), radial-gradient(circle at top right, rgba(236, 72, 153, 0.1), transparent 28%), radial-gradient(circle at bottom, rgba(14, 165, 233, 0.08), transparent 34%)"
+              : "radial-gradient(circle at top left, rgba(99, 102, 241, 0.24), transparent 34%), radial-gradient(circle at top right, rgba(236, 72, 153, 0.22), transparent 28%), radial-gradient(circle at bottom, rgba(14, 165, 233, 0.16), transparent 34%)",
+          }}
+        />
         <div className="relative grid gap-6 p-6 xl:grid-cols-[1.05fr,1.15fr] xl:items-center">
           <div>
             <p className="section-kicker">Vista de progreso</p>
@@ -140,6 +148,7 @@ export function AnalyticsPage() {
                 key={metric.title}
                 accent={metric.accent}
                 helper={metric.helper}
+                theme={theme}
                 title={metric.title}
                 value={metric.value}
               />
@@ -150,7 +159,7 @@ export function AnalyticsPage() {
 
       <section className="grid gap-5 xl:grid-cols-2">
         <article className="panel relative overflow-hidden p-6">
-          <AccentGlow accent={sectionAccents.projects} />
+          <AccentGlow accent={sectionAccents.projects} theme={theme} />
           <p className="section-kicker">Tareas por proyecto</p>
           <h3 className="mt-3 text-2xl font-semibold text-text">Carga distribuida</h3>
           <div className="mt-6 h-[320px]">
@@ -171,7 +180,7 @@ export function AnalyticsPage() {
         </article>
 
         <article className="panel relative overflow-hidden p-6">
-          <AccentGlow accent={sectionAccents.completion} />
+          <AccentGlow accent={sectionAccents.completion} theme={theme} />
           <p className="section-kicker">Cumplimiento global</p>
           <h3 className="mt-3 text-2xl font-semibold text-text">Tareas completadas y pendientes</h3>
           <div className="mt-6 h-[320px]">
@@ -191,7 +200,7 @@ export function AnalyticsPage() {
 
       <section className="grid gap-5 xl:grid-cols-[1fr,0.9fr]">
         <article className="panel relative overflow-hidden p-6">
-          <AccentGlow accent={sectionAccents.weekly} />
+          <AccentGlow accent={sectionAccents.weekly} theme={theme} />
           <p className="section-kicker">Tendencia semanal</p>
           <h3 className="mt-3 text-2xl font-semibold text-text">Tareas creadas y completadas</h3>
           <div className="mt-6 h-[320px]">
@@ -209,7 +218,7 @@ export function AnalyticsPage() {
         </article>
 
         <article className="panel relative overflow-hidden p-6">
-          <AccentGlow accent={sectionAccents.radar} />
+          <AccentGlow accent={sectionAccents.radar} theme={theme} />
           <p className="section-kicker">Radar operativo</p>
           <h3 className="mt-3 text-2xl font-semibold text-text">Estado y prioridad del trabajo pendiente</h3>
           <div className="mt-6 grid gap-4">
@@ -240,7 +249,7 @@ export function AnalyticsPage() {
 
       <section className="grid gap-5 xl:grid-cols-[1fr,0.95fr]">
         <article className="panel relative overflow-hidden p-6">
-          <AccentGlow accent={sectionAccents.compare} />
+          <AccentGlow accent={sectionAccents.compare} theme={theme} />
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="section-kicker">Ejecucion por proyecto</p>
@@ -288,7 +297,7 @@ export function AnalyticsPage() {
         </article>
 
         <article className="panel relative overflow-hidden p-6">
-          <AccentGlow accent={sectionAccents.deadlines} />
+          <AccentGlow accent={sectionAccents.deadlines} theme={theme} />
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="section-kicker">Fechas limite cercanas</p>
@@ -326,28 +335,40 @@ export function AnalyticsPage() {
   );
 }
 
-function AccentGlow({ accent }) {
+function AccentGlow({ accent, theme }) {
+  const isLight = theme === "light";
+
   return (
     <div
       className="pointer-events-none absolute inset-x-0 top-0 h-24 opacity-80"
       style={{
-        background: `linear-gradient(180deg, ${accent}26 0%, rgba(15, 23, 42, 0) 100%)`,
+        background: isLight
+          ? `linear-gradient(180deg, ${accent}16 0%, rgba(255, 255, 255, 0) 100%)`
+          : `linear-gradient(180deg, ${accent}26 0%, rgba(15, 23, 42, 0) 100%)`,
       }}
     />
   );
 }
 
-function Metric({ title, value, helper, accent }) {
+function Metric({ title, value, helper, accent, theme }) {
+  const isLight = theme === "light";
+
   return (
     <article
       className="relative overflow-hidden rounded-[28px] border border-white/10 p-4 shadow-soft"
       style={{
-        background: `linear-gradient(160deg, ${accent}24 0%, rgba(15, 23, 42, 0.92) 58%, rgba(15, 23, 42, 0.98) 100%)`,
+        borderColor: isLight ? `${accent}26` : "rgba(255, 255, 255, 0.1)",
+        background: isLight
+          ? `radial-gradient(circle at top right, ${accent}18 0%, transparent 42%), linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(244, 247, 255, 0.96) 100%)`
+          : `linear-gradient(160deg, ${accent}24 0%, rgba(15, 23, 42, 0.92) 58%, rgba(15, 23, 42, 0.98) 100%)`,
+        boxShadow: isLight
+          ? "0 18px 34px rgba(148, 163, 184, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.95)"
+          : undefined,
       }}
     >
       <div
         className="absolute right-3 top-3 h-2.5 w-2.5 rounded-full"
-        style={{ backgroundColor: accent, boxShadow: `0 0 16px ${accent}` }}
+        style={{ backgroundColor: accent, boxShadow: isLight ? `0 0 10px ${accent}55` : `0 0 16px ${accent}` }}
       />
       <p className="text-sm text-muted">{title}</p>
       <strong className="mt-4 block text-3xl font-semibold text-text">{value}</strong>

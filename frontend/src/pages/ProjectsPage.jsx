@@ -21,7 +21,7 @@ import { PageShell } from "../components/ui/PageShell";
 import { EmptyState } from "../components/ui/EmptyState";
 import { Modal } from "../components/ui/Modal";
 import { SkeletonCard } from "../components/ui/SkeletonCard";
-import { StatusBadge } from "../components/ui/StatusBadge";
+import { StatusBadge, getTaskValueLabel } from "../components/ui/StatusBadge";
 import { useToast } from "../context/ToastContext";
 
 const statuses = ["TODO", "IN_PROGRESS", "REVIEW", "DONE"];
@@ -1152,7 +1152,7 @@ export function ProjectsPage({
               value={taskForm.description}
             />
           </label>
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             <SelectField
               label="Prioridad"
               onChange={(value) => setTaskForm((c) => ({ ...c, priority: value }))}
@@ -1166,7 +1166,7 @@ export function ProjectsPage({
               value={taskForm.status}
             />
             <label className="block">
-              <span className="mb-2 block text-sm text-text">Deadline</span>
+              <span className="mb-2 block text-sm text-text">Fecha limite</span>
               <input
                 className="input"
                 onChange={(e) => setTaskForm((c) => ({ ...c, dueDate: e.target.value }))}
@@ -1177,7 +1177,7 @@ export function ProjectsPage({
           </div>
 
           <div>
-            <div className="mb-3 flex items-center justify-between gap-3">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
               <span className="text-sm text-text">Etiquetas</span>
               <button className="btn-ghost px-3 py-2 text-xs" onClick={openTagModal} type="button">
                 Crear etiqueta
@@ -1212,7 +1212,7 @@ export function ProjectsPage({
                   );
                 })
               ) : (
-                <div className="rounded-2xl border border-dashed border-border px-4 py-5 text-sm text-muted">
+                <div className="w-full rounded-2xl border border-dashed border-border px-4 py-5 text-sm text-muted">
                   No hay etiquetas creadas todavia.
                 </div>
               )}
@@ -1437,15 +1437,19 @@ function SortableTaskCard({ task, onClick }) {
 function TaskCard({ task, onClick, attributes = {}, listeners = {} }) {
   return (
     <button
-      className="w-full rounded-3xl border border-border bg-slate-900/65 p-4 text-left transition hover:border-primary/30"
+      className="w-full min-w-0 rounded-3xl border border-border bg-slate-900/65 p-4 text-left transition hover:border-primary/30"
       onClick={onClick}
       type="button"
       {...attributes}
       {...listeners}
     >
-      <div className="flex items-start justify-between gap-3">
-        <p className="font-semibold text-text">{task.title}</p>
-        <StatusBadge value={task.priority} />
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <p className="truncate font-semibold text-text sm:whitespace-normal sm:break-words">{task.title}</p>
+        </div>
+        <div className="shrink-0">
+          <StatusBadge value={task.priority} />
+        </div>
       </div>
 
       <p className="mt-3 text-sm leading-6 text-muted">{task.description || "Sin descripcion detallada."}</p>
@@ -1489,7 +1493,7 @@ function SelectField({ label, value, options, onChange }) {
       <select className="input" onChange={(event) => onChange(event.target.value)} value={value}>
         {options.map((option) => (
           <option key={option} value={option}>
-            {option === "ALL" ? "Todos" : option.replaceAll("_", " ")}
+            {getTaskValueLabel(option)}
           </option>
         ))}
       </select>

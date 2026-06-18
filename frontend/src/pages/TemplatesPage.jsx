@@ -133,9 +133,13 @@ export function TemplatesPage() {
                 <div className="relative mt-6 space-y-3">
                   {template.templateTasks.slice(0, 3).map((task) => (
                     <div key={task.id} className="surface-tile">
-                      <div className="flex items-center justify-between gap-3">
-                        <p className="font-semibold text-text">{task.title}</p>
-                        <StatusBadge value={task.priority} />
+                      <div className="flex flex-wrap items-start justify-between gap-3">
+                        <div className="min-w-0 flex-1">
+                          <p className="font-semibold text-text">{task.title}</p>
+                        </div>
+                        <div className="shrink-0">
+                          <StatusBadge value={task.priority} />
+                        </div>
                       </div>
                       <p className="mt-3 text-sm leading-6 text-muted">{task.description}</p>
                     </div>

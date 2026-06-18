@@ -11,10 +11,10 @@ const items = [
   { label: "Perfil", to: "/app/profile", helper: "Cuenta y materias" },
 ];
 
-export function Sidebar({ open, onClose }) {
+export function Sidebar({ open, onClose, collapsed, onToggleCollapse }) {
   return (
     <div
-      className={`fixed inset-0 z-40 xl:static xl:z-auto ${open ? "pointer-events-auto" : "pointer-events-none xl:pointer-events-auto"}`}
+      className={`fixed inset-0 z-40 ${open ? "pointer-events-auto" : "pointer-events-none"} xl:static xl:z-auto xl:pointer-events-auto`}
     >
       <button
         className={`absolute inset-0 bg-slate-950/70 backdrop-blur-sm transition xl:hidden ${open ? "opacity-100" : "opacity-0"}`}
@@ -25,6 +25,8 @@ export function Sidebar({ open, onClose }) {
       <aside
         className={`panel relative z-10 flex h-full w-[88vw] max-w-[320px] flex-col overflow-hidden p-5 transition duration-300 xl:h-fit xl:w-auto xl:max-w-none xl:translate-x-0 xl:sticky xl:top-4 ${
           open ? "translate-x-0" : "-translate-x-[105%]"
+        } ${collapsed ? "xl:hidden" : "xl:flex"} ${
+          collapsed ? "xl:pointer-events-none" : ""
         }`}
       >
         <div className="pointer-events-none absolute -left-12 top-10 h-28 w-28 rounded-full bg-primary/20 blur-3xl" />
@@ -43,6 +45,12 @@ export function Sidebar({ open, onClose }) {
 
           <button className="btn-ghost px-3 py-2 xl:hidden" onClick={onClose} type="button">
             Cerrar
+          </button>
+        </div>
+
+        <div className="mt-4 hidden xl:flex">
+          <button className="btn-secondary w-full justify-center" onClick={onToggleCollapse} type="button">
+            Ocultar menu
           </button>
         </div>
 

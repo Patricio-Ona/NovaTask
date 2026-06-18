@@ -54,7 +54,7 @@ const getTodayLabel = () => {
   return `${weekDays[today.getDay()]} ${String(today.getDate()).padStart(2, "0")} ${monthNames[today.getMonth()]}`;
 };
 
-export function Topbar({ onOpenSidebar }) {
+export function Topbar({ onOpenSidebar, onToggleSidebarCollapse, sidebarCollapsed }) {
   const location = useLocation();
   const { user, logout, updateProfile } = useAuth();
   const { pushToast } = useToast();
@@ -150,6 +150,9 @@ export function Topbar({ onOpenSidebar }) {
           <div className="flex min-w-0 items-start gap-3 sm:gap-4">
             <button className="btn-secondary px-3 py-2 xl:hidden" onClick={onOpenSidebar} type="button">
               Menu
+            </button>
+            <button className="btn-secondary hidden px-3 py-2 xl:inline-flex" onClick={onToggleSidebarCollapse} type="button">
+              {sidebarCollapsed ? "Abrir menu" : "Ocultar menu"}
             </button>
 
             <div className="min-w-0">

@@ -7,9 +7,15 @@ export const useAppStore = create(
       theme: "dark",
       projectView: "kanban",
       calendarView: "month",
+      sidebarCollapsed: false,
       setTheme: (theme) => set({ theme }),
       setProjectView: (projectView) => set({ projectView }),
       setCalendarView: (calendarView) => set({ calendarView }),
+      setSidebarCollapsed: (sidebarCollapsed) => set({ sidebarCollapsed }),
+      toggleSidebarCollapsed: () =>
+        set((state) => ({
+          sidebarCollapsed: !state.sidebarCollapsed,
+        })),
       toggleTheme: () =>
         set((state) => ({
           theme: state.theme === "dark" ? "light" : "dark",
@@ -21,6 +27,7 @@ export const useAppStore = create(
         theme: state.theme,
         projectView: state.projectView,
         calendarView: state.calendarView,
+        sidebarCollapsed: state.sidebarCollapsed,
       }),
     }
   )

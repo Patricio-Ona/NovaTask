@@ -218,7 +218,7 @@ export function AnalyticsPage() {
         <article className="panel p-6">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="section-kicker">Deadlines cercanos</p>
+              <p className="section-kicker">Fechas limite cercanas</p>
               <h3 className="mt-3 text-2xl font-semibold text-text">Siguientes entregables</h3>
             </div>
             <span className="pill">Priorizar ahora</span>
@@ -228,14 +228,14 @@ export function AnalyticsPage() {
               data.upcomingDeadlines.map((task) => (
                 <div key={task.id} className="surface-tile">
                   <div className="flex flex-wrap items-start justify-between gap-3">
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
                         <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: task.projectColor }} />
                         <p className="font-semibold text-text">{task.title}</p>
                       </div>
                       <p className="mt-2 text-sm text-muted">{task.projectTitle}</p>
                     </div>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex shrink-0 flex-wrap gap-2">
                       <StatusBadge value={task.priority} />
                       <StatusBadge value={task.status} />
                     </div>

@@ -213,14 +213,14 @@ export function DashboardPage() {
               data.focusTasks.map((task) => (
                 <div key={task.id} className="surface-tile">
                   <div className="flex flex-wrap items-start justify-between gap-3">
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
                         <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: task.projectColor }} />
                         <p className="text-sm font-semibold text-text">{task.title}</p>
                       </div>
                       <p className="mt-2 text-xs uppercase tracking-[0.18em] text-muted">{task.projectTitle}</p>
                     </div>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex shrink-0 flex-wrap gap-2">
                       <StatusBadge value={task.priority} />
                       <StatusBadge value={task.status} />
                     </div>
@@ -317,7 +317,7 @@ export function DashboardPage() {
               data.upcomingEvents.map((event) => (
                 <div key={event.id} className="surface-tile">
                   <div className="flex items-start justify-between gap-3">
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
                         <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: event.color }} />
                         <p className="font-semibold text-text">{event.title}</p>
@@ -384,11 +384,11 @@ export function DashboardPage() {
               data.dueSoon.map((task) => (
                 <div key={task.id} className="surface-tile">
                   <div className="flex flex-wrap items-start justify-between gap-3">
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <p className="font-semibold text-text">{task.title}</p>
                       <p className="mt-2 text-sm text-muted">{task.project.title}</p>
                     </div>
-                    <div className="text-right">
+                    <div className="shrink-0 text-right">
                       <StatusBadge value={task.status} />
                       <p className="mt-2 text-xs text-muted">{formatDate(task.dueDate, { withYear: true })}</p>
                     </div>

@@ -8,22 +8,27 @@ const styles = {
   LOW: "border border-border bg-surface/75 text-muted shadow-card",
 };
 
-const labels = {
+export const TASK_VALUE_LABELS = {
   TODO: "Pendiente",
-  IN_PROGRESS: "En progreso",
+  IN_PROGRESS: "En curso",
   REVIEW: "Revision",
-  DONE: "Completada",
+  DONE: "Hecha",
   HIGH: "Alta",
   MEDIUM: "Media",
   LOW: "Baja",
+  ALL: "Todos",
 };
+
+export const getTaskValueLabel = (value) => TASK_VALUE_LABELS[value] ?? String(value).replaceAll("_", " ");
 
 export function StatusBadge({ value }) {
   return (
     <span
-      className={`inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ${styles[value] ?? styles.TODO}`}
+      className={`inline-flex max-w-full shrink-0 items-center justify-center whitespace-nowrap rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase leading-none tracking-[0.12em] sm:px-3 sm:text-[11px] sm:tracking-[0.14em] ${
+        styles[value] ?? styles.TODO
+      }`}
     >
-      {labels[value] ?? String(value).replaceAll("_", " ")}
+      {getTaskValueLabel(value)}
     </span>
   );
 }

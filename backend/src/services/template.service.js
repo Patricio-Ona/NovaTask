@@ -77,13 +77,15 @@ export const applyTemplate = async (userId, templateId, payload) => {
   }
 
   const project = await prisma.$transaction(async (tx) => {
+    const projectDueDate = payload.dueDate ? new Date(payload.dueDate) : null;
+
     const createdProject = await tx.project.create({
       data: {
         userId,
         title: payload.projectTitle,
         description: payload.description || template.description,
         color: template.color,
-        dueDate: payload.dueDate ? new Date(payload.dueDate) : null,
+        dueDate: projectDueDate,
       },
     });
 
@@ -95,6 +97,7 @@ export const applyTemplate = async (userId, templateId, payload) => {
           description: task.description,
           priority: task.priority,
           status: task.status,
+          dueDate: projectDueDate,
           position: task.position,
         })),
       });

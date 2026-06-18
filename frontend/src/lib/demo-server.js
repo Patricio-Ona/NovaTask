@@ -828,7 +828,7 @@ const routeDemoRequest = (state, path, options, context) => {
   }
 
   if (path === "/tasks" && method === "POST") {
-    ensureProjectOwnership(state, user.id, body.projectId);
+    const project = ensureProjectOwnership(state, user.id, body.projectId);
     const position =
       body.position ??
       state.tasks.filter((task) => task.projectId === body.projectId && task.status === (body.status ?? "TODO")).length;
@@ -839,7 +839,7 @@ const routeDemoRequest = (state, path, options, context) => {
       description: body.description || null,
       priority: body.priority || "MEDIUM",
       status: body.status || "TODO",
-      dueDate: body.dueDate || null,
+      dueDate: body.dueDate || project.dueDate || null,
       position,
       createdAt: isoNow(),
       updatedAt: isoNow(),
@@ -963,7 +963,7 @@ const routeDemoRequest = (state, path, options, context) => {
           description: templateTask.description,
           priority: templateTask.priority,
           status: templateTask.status,
-          dueDate: null,
+          dueDate: project.dueDate || null,
           position: templateTask.position,
           createdAt: isoNow(),
           updatedAt: isoNow(),

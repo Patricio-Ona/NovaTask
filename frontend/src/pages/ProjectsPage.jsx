@@ -322,7 +322,10 @@ export function ProjectsPage({
         tagIds: task.taskTags.map((entry) => entry.tagId),
       });
     } else {
-      setTaskForm(emptyTaskForm);
+      setTaskForm({
+        ...emptyTaskForm,
+        dueDate: toInputDateTime(detailQuery.data?.dueDate),
+      });
     }
 
     setSubtaskDraft("");
@@ -1173,6 +1176,11 @@ export function ProjectsPage({
                 type="datetime-local"
                 value={taskForm.dueDate}
               />
+              {taskModal.mode === "create" && detailQuery.data?.dueDate ? (
+                <span className="mt-2 block text-xs text-muted">
+                  Se usa automaticamente la fecha limite del proyecto, aunque puedes cambiarla si lo necesitas.
+                </span>
+              ) : null}
             </label>
           </div>
 

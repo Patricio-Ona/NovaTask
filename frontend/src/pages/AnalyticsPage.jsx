@@ -23,6 +23,15 @@ import { useAsyncData } from "../hooks/useAsyncData";
 import { useAppStore } from "../store/useAppStore";
 
 const chartColors = ["#6366F1", "#8B5CF6", "#22C55E", "#F59E0B"];
+const metricTones = ["#6366F1", "#8B5CF6", "#F43F5E", "#0EA5E9", "#22C55E"];
+const sectionAccents = {
+  projects: "#6366F1",
+  completion: "#22C55E",
+  weekly: "#8B5CF6",
+  radar: "#F59E0B",
+  compare: "#0EA5E9",
+  deadlines: "#EC4899",
+};
 
 export function AnalyticsPage() {
   const theme = useAppStore((state) => state.theme);
@@ -73,6 +82,38 @@ export function AnalyticsPage() {
   };
   const tooltipFormatter = (value, name) => [value, getChartSeriesLabel(name)];
   const percentTooltipFormatter = (value, name) => [`${value}%`, getChartSeriesLabel(name)];
+  const spotlightMetrics = [
+    {
+      title: "Total de tareas",
+      value: data.summary.totalTasks,
+      helper: "Base activa",
+      accent: metricTones[0],
+    },
+    {
+      title: "Cumplimiento",
+      value: `${data.summary.completionRate}%`,
+      helper: "Avance general",
+      accent: metricTones[1],
+    },
+    {
+      title: "Vencidas",
+      value: data.summary.overdue,
+      helper: "Atencion inmediata",
+      accent: metricTones[2],
+    },
+    {
+      title: "En curso",
+      value: data.summary.inProgress,
+      helper: "Trabajo activo",
+      accent: metricTones[3],
+    },
+    {
+      title: "En revision",
+      value: data.summary.review,
+      helper: "Pendientes de cierre",
+      accent: metricTones[4],
+    },
+  ];
 
   return (
     <PageShell
@@ -81,16 +122,35 @@ export function AnalyticsPage() {
       kicker="Seguimiento"
       title="Analiticas personales"
     >
-      <section className="grid gap-5 xl:grid-cols-5">
-        <Metric title="Total de tareas" value={data.summary.totalTasks} />
-        <Metric title="Cumplimiento" value={`${data.summary.completionRate}%`} />
-        <Metric title="Vencidas" value={data.summary.overdue} />
-        <Metric title="En curso" value={data.summary.inProgress} />
-        <Metric title="En revision" value={data.summary.review} />
+      <section className="panel relative overflow-hidden p-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.24),transparent_34%),radial-gradient(circle_at_top_right,rgba(236,72,153,0.22),transparent_28%),radial-gradient(circle_at_bottom,rgba(14,165,233,0.16),transparent_34%)]" />
+        <div className="relative grid gap-6 p-6 xl:grid-cols-[1.05fr,1.15fr] xl:items-center">
+          <div>
+            <p className="section-kicker">Vista de progreso</p>
+            <h2 className="mt-3 text-3xl font-semibold text-text sm:text-4xl">Tu rendimiento con mas energia visual.</h2>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">
+              Mira de un vistazo cuanto avanzaste, que tareas siguen abiertas y en que parte de tu carga conviene poner
+              el foco ahora mismo.
+            </p>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+            {spotlightMetrics.map((metric) => (
+              <Metric
+                key={metric.title}
+                accent={metric.accent}
+                helper={metric.helper}
+                title={metric.title}
+                value={metric.value}
+              />
+            ))}
+          </div>
+        </div>
       </section>
 
       <section className="grid gap-5 xl:grid-cols-2">
-        <article className="panel p-6">
+        <article className="panel relative overflow-hidden p-6">
+          <AccentGlow accent={sectionAccents.projects} />
           <p className="section-kicker">Tareas por proyecto</p>
           <h3 className="mt-3 text-2xl font-semibold text-text">Carga distribuida</h3>
           <div className="mt-6 h-[320px]">
@@ -110,7 +170,8 @@ export function AnalyticsPage() {
           </div>
         </article>
 
-        <article className="panel p-6">
+        <article className="panel relative overflow-hidden p-6">
+          <AccentGlow accent={sectionAccents.completion} />
           <p className="section-kicker">Cumplimiento global</p>
           <h3 className="mt-3 text-2xl font-semibold text-text">Tareas completadas y pendientes</h3>
           <div className="mt-6 h-[320px]">
@@ -129,7 +190,8 @@ export function AnalyticsPage() {
       </section>
 
       <section className="grid gap-5 xl:grid-cols-[1fr,0.9fr]">
-        <article className="panel p-6">
+        <article className="panel relative overflow-hidden p-6">
+          <AccentGlow accent={sectionAccents.weekly} />
           <p className="section-kicker">Tendencia semanal</p>
           <h3 className="mt-3 text-2xl font-semibold text-text">Tareas creadas y completadas</h3>
           <div className="mt-6 h-[320px]">
@@ -146,7 +208,8 @@ export function AnalyticsPage() {
           </div>
         </article>
 
-        <article className="panel p-6">
+        <article className="panel relative overflow-hidden p-6">
+          <AccentGlow accent={sectionAccents.radar} />
           <p className="section-kicker">Radar operativo</p>
           <h3 className="mt-3 text-2xl font-semibold text-text">Estado y prioridad del trabajo pendiente</h3>
           <div className="mt-6 grid gap-4">
@@ -176,7 +239,8 @@ export function AnalyticsPage() {
       </section>
 
       <section className="grid gap-5 xl:grid-cols-[1fr,0.95fr]">
-        <article className="panel p-6">
+        <article className="panel relative overflow-hidden p-6">
+          <AccentGlow accent={sectionAccents.compare} />
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="section-kicker">Ejecucion por proyecto</p>
@@ -223,7 +287,8 @@ export function AnalyticsPage() {
           </div>
         </article>
 
-        <article className="panel p-6">
+        <article className="panel relative overflow-hidden p-6">
+          <AccentGlow accent={sectionAccents.deadlines} />
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="section-kicker">Fechas limite cercanas</p>
@@ -261,17 +326,39 @@ export function AnalyticsPage() {
   );
 }
 
-function Metric({ title, value }) {
+function AccentGlow({ accent }) {
   return (
-    <article className="metric-card">
+    <div
+      className="pointer-events-none absolute inset-x-0 top-0 h-24 opacity-80"
+      style={{
+        background: `linear-gradient(180deg, ${accent}26 0%, rgba(15, 23, 42, 0) 100%)`,
+      }}
+    />
+  );
+}
+
+function Metric({ title, value, helper, accent }) {
+  return (
+    <article
+      className="relative overflow-hidden rounded-[28px] border border-white/10 p-4 shadow-soft"
+      style={{
+        background: `linear-gradient(160deg, ${accent}24 0%, rgba(15, 23, 42, 0.92) 58%, rgba(15, 23, 42, 0.98) 100%)`,
+      }}
+    >
+      <div
+        className="absolute right-3 top-3 h-2.5 w-2.5 rounded-full"
+        style={{ backgroundColor: accent, boxShadow: `0 0 16px ${accent}` }}
+      />
       <p className="text-sm text-muted">{title}</p>
       <strong className="mt-4 block text-3xl font-semibold text-text">{value}</strong>
+      <p className="mt-2 text-xs text-muted">{helper}</p>
     </article>
   );
 }
 
 function ProgressRow({ label, value, max }) {
   const percent = max ? Math.round((value / max) * 100) : 0;
+  const accent = getProgressAccent(label);
 
   return (
     <div>
@@ -280,10 +367,30 @@ function ProgressRow({ label, value, max }) {
         <span className="text-sm text-muted">{value}</span>
       </div>
       <div className="mt-2 h-2 overflow-hidden rounded-full bg-bg/70">
-        <div className="h-full rounded-full bg-gradient-to-r from-primary to-secondary" style={{ width: `${percent}%` }} />
+        <div
+          className="h-full rounded-full"
+          style={{
+            width: `${percent}%`,
+            background: `linear-gradient(90deg, ${accent} 0%, rgba(255,255,255,0.92) 140%)`,
+          }}
+        />
       </div>
     </div>
   );
+}
+
+function getProgressAccent(value) {
+  const palette = {
+    TODO: "#64748B",
+    IN_PROGRESS: "#0EA5E9",
+    REVIEW: "#8B5CF6",
+    DONE: "#22C55E",
+    HIGH: "#EF4444",
+    MEDIUM: "#F59E0B",
+    LOW: "#38BDF8",
+  };
+
+  return palette[value] ?? "#6366F1";
 }
 
 function EmptyInline({ message }) {

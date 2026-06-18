@@ -227,6 +227,7 @@ export const createTask = async (userId, payload) => {
       status,
     },
   });
+  const inheritedDueDate = payload.dueDate ? new Date(payload.dueDate) : project.dueDate ?? null;
 
   const task = await prisma.task.create({
     data: {
@@ -235,7 +236,7 @@ export const createTask = async (userId, payload) => {
       description: payload.description || null,
       priority: payload.priority ?? "MEDIUM",
       status,
-      dueDate: payload.dueDate ? new Date(payload.dueDate) : null,
+      dueDate: inheritedDueDate,
       position: payload.position ?? fallbackPosition,
       taskTags: payload.tagIds?.length
         ? {

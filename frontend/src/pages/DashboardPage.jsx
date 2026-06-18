@@ -498,10 +498,12 @@ function SpotlightCard({ label, value, tone, helper }) {
   };
 
   return (
-    <div className={`spotlight-card ${toneClass[tone] ?? toneClass.primary}`}>
-      <div className="flex items-start justify-between gap-3">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.18em]">{label}</p>
-        <span className="h-2.5 w-2.5 rounded-full bg-current opacity-80" />
+    <div className={`spotlight-card min-w-0 ${toneClass[tone] ?? toneClass.primary}`}>
+      <div className="flex items-start justify-between gap-2">
+        <p className="min-w-0 flex-1 text-[10px] font-semibold uppercase leading-[1.35] tracking-[0.12em] [overflow-wrap:anywhere] sm:text-[11px] sm:tracking-[0.18em]">
+          {label}
+        </p>
+        <span className="mt-0.5 h-2.5 w-2.5 shrink-0 rounded-full bg-current opacity-80" />
       </div>
       <strong className="mt-4 block text-3xl font-semibold text-text sm:mt-5 sm:text-4xl">{value}</strong>
       <p className="mt-2 text-xs text-muted">{helper}</p>

@@ -210,8 +210,10 @@ export function TemplatesPage() {
 
 function StatTile({ label, value }) {
   return (
-    <div className="surface-tile rounded-[24px]">
-      <p className="text-xs uppercase tracking-[0.14em] text-muted">{label}</p>
+    <div className="surface-tile min-w-0 rounded-[24px]">
+      <p className="text-[10px] uppercase leading-[1.35] tracking-[0.1em] text-muted [overflow-wrap:anywhere] sm:text-xs sm:tracking-[0.14em]">
+        {label}
+      </p>
       <strong className="mt-3 block text-2xl font-semibold text-text">{value}</strong>
     </div>
   );

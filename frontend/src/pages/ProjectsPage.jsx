@@ -661,7 +661,7 @@ export function ProjectsPage({
               Crear primer proyecto
             </button>
           }
-          description="Crea un proyecto para comenzar a registrar tareas, prioridades y deadlines."
+          description="Crea un proyecto para comenzar a registrar tareas, prioridades y fechas limite."
           title="Todavia no hay proyectos"
         />
       ) : (

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { apiGet } from "../lib/api-client";
+import { getEventTypeLabel } from "../lib/display-labels";
 import { formatDate } from "../lib/formatters";
 import { useAsyncData } from "../hooks/useAsyncData";
 import { useAppStore } from "../store/useAppStore";
@@ -592,7 +593,7 @@ function DayAgenda({ items, title }) {
                       </span>
                     </>
                   ) : (
-                    <span className="pill">{item.eventType ?? item.status}</span>
+                    <span className="pill">{getEventTypeLabel(item.eventType ?? item.status)}</span>
                   )}
                 </div>
                 <p className="mt-4 text-xs text-muted">{formatDate(item.startAt ?? item.dueDate, { withYear: true, withTime: true })}</p>

@@ -13,6 +13,7 @@ import {
   Cell,
 } from "recharts";
 import { apiGet } from "../lib/api-client";
+import { getChartSeriesLabel } from "../lib/display-labels";
 import { formatDate } from "../lib/formatters";
 import { EmptyState } from "../components/ui/EmptyState";
 import { PageShell } from "../components/ui/PageShell";
@@ -55,9 +56,13 @@ export function AnalyticsPage() {
   }
 
   const pieData = [
-    { name: "Completadas", value: data.summary.completionRate },
-    { name: "Pendientes", value: 100 - data.summary.completionRate },
+    { name: "Completadas", porcentaje: data.summary.completionRate },
+    { name: "Pendientes", porcentaje: 100 - data.summary.completionRate },
   ];
+  const projectChartData = data.byProject.map((project) => ({
+    ...project,
+    tasks: project.value,
+  }));
   const axisColor = theme === "light" ? "#64748B" : "#94A3B8";
   const gridColor = theme === "light" ? "#D8E1F0" : "#334155";
   const tooltipStyle = {
@@ -66,6 +71,8 @@ export function AnalyticsPage() {
     borderRadius: 16,
     color: theme === "light" ? "#0F172A" : "#F8FAFC",
   };
+  const tooltipFormatter = (value, name) => [value, getChartSeriesLabel(name)];
+  const percentTooltipFormatter = (value, name) => [`${value}%`, getChartSeriesLabel(name)];
 
   return (
     <PageShell
@@ -88,15 +95,16 @@ export function AnalyticsPage() {
           <h3 className="mt-3 text-2xl font-semibold text-text">Carga distribuida</h3>
           <div className="mt-6 h-[320px]">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data.byProject}>
+              <BarChart data={projectChartData}>
                 <CartesianGrid stroke={gridColor} strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="name" stroke={axisColor} />
                 <YAxis stroke={axisColor} />
                 <Tooltip
                   contentStyle={tooltipStyle}
                   cursor={{ fill: "rgba(99,102,241,0.12)" }}
+                  formatter={tooltipFormatter}
                 />
-                <Bar dataKey="value" fill="#6366F1" radius={[12, 12, 0, 0]} />
+                <Bar dataKey="tasks" name="tasks" fill="#6366F1" radius={[12, 12, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -108,12 +116,12 @@ export function AnalyticsPage() {
           <div className="mt-6 h-[320px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie data={pieData} dataKey="value" innerRadius={70} outerRadius={110} paddingAngle={4}>
+                <Pie data={pieData} dataKey="porcentaje" innerRadius={70} outerRadius={110} paddingAngle={4}>
                   {pieData.map((entry, index) => (
                     <Cell key={entry.name} fill={chartColors[index]} />
                   ))}
                 </Pie>
-                <Tooltip contentStyle={tooltipStyle} />
+                <Tooltip contentStyle={tooltipStyle} formatter={percentTooltipFormatter} />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -130,9 +138,9 @@ export function AnalyticsPage() {
                 <CartesianGrid stroke={gridColor} strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="label" stroke={axisColor} />
                 <YAxis stroke={axisColor} />
-                <Tooltip contentStyle={tooltipStyle} />
-                <Line dataKey="created" stroke="#8B5CF6" strokeWidth={3} type="monotone" />
-                <Line dataKey="completed" stroke="#22C55E" strokeWidth={3} type="monotone" />
+                <Tooltip contentStyle={tooltipStyle} formatter={tooltipFormatter} />
+                <Line dataKey="created" name="created" stroke="#8B5CF6" strokeWidth={3} type="monotone" />
+                <Line dataKey="completed" name="completed" stroke="#22C55E" strokeWidth={3} type="monotone" />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -140,7 +148,7 @@ export function AnalyticsPage() {
 
         <article className="panel p-6">
           <p className="section-kicker">Radar operativo</p>
-          <h3 className="mt-3 text-2xl font-semibold text-text">Estado y prioridad del backlog</h3>
+          <h3 className="mt-3 text-2xl font-semibold text-text">Estado y prioridad del trabajo pendiente</h3>
           <div className="mt-6 grid gap-4">
             <div className="surface-tile">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">Estado</p>
@@ -244,7 +252,7 @@ export function AnalyticsPage() {
                 </div>
               ))
             ) : (
-              <EmptyInline message="No hay deadlines pendientes por mostrar." />
+              <EmptyInline message="No hay fechas limite pendientes por mostrar." />
             )}
           </div>
         </article>

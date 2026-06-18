@@ -282,8 +282,8 @@ const getDefaultState = () => {
     {
       id: createId("task"),
       projectId: thesisProjectId,
-      title: "Disenar dashboard principal",
-      description: "Resumen semanal, deadlines y metricas operativas del sistema.",
+      title: "Disenar panel principal",
+      description: "Resumen semanal, fechas limite y metricas operativas del sistema.",
       priority: "HIGH",
       status: "IN_PROGRESS",
       dueDate: setHour(addDays(now, 2), 20).toISOString(),
@@ -295,7 +295,7 @@ const getDefaultState = () => {
       id: createId("task"),
       projectId: thesisProjectId,
       title: "Implementar autenticacion propia",
-      description: "Registro, login, refresh y proteccion de rutas para el MVP.",
+      description: "Registro, acceso, renovacion de sesion y proteccion de rutas para el MVP.",
       priority: "HIGH",
       status: "TODO",
       dueDate: setHour(addDays(now, 4), 19).toISOString(),
@@ -319,7 +319,7 @@ const getDefaultState = () => {
       id: createId("task"),
       projectId: architectureProjectId,
       title: "Ajustar tablero Kanban",
-      description: "Pulir drag and drop y subtareas para la demo funcional.",
+      description: "Pulir el arrastre entre columnas y las subtareas para la demo funcional.",
       priority: "MEDIUM",
       status: "REVIEW",
       dueDate: setHour(addDays(now, 1), 17).toISOString(),
@@ -379,18 +379,18 @@ const getDefaultState = () => {
     ],
     tasks,
     subtasks: [
-      { id: createId("subtask"), taskId: dashboardTask.id, title: "Topbar y metricas", completed: true, createdAt: addDays(now, -9).toISOString() },
-      { id: createId("subtask"), taskId: dashboardTask.id, title: "Cards de deadlines", completed: true, createdAt: addDays(now, -8).toISOString() },
+      { id: createId("subtask"), taskId: dashboardTask.id, title: "Barra superior y metricas", completed: true, createdAt: addDays(now, -9).toISOString() },
+      { id: createId("subtask"), taskId: dashboardTask.id, title: "Tarjetas de fechas limite", completed: true, createdAt: addDays(now, -8).toISOString() },
       { id: createId("subtask"), taskId: dashboardTask.id, title: "Actividad reciente", completed: false, createdAt: addDays(now, -7).toISOString() },
-      { id: createId("subtask"), taskId: authTask.id, title: "Pantalla de login", completed: true, createdAt: addDays(now, -7).toISOString() },
+      { id: createId("subtask"), taskId: authTask.id, title: "Pantalla de acceso", completed: true, createdAt: addDays(now, -7).toISOString() },
       { id: createId("subtask"), taskId: authTask.id, title: "Tokens y sesion", completed: false, createdAt: addDays(now, -6).toISOString() },
       { id: createId("subtask"), taskId: reviewTask.id, title: "Mover entre columnas", completed: true, createdAt: addDays(now, -4).toISOString() },
-      { id: createId("subtask"), taskId: thesisDoneTask.id, title: "Version Word", completed: true, createdAt: addDays(now, -13).toISOString() },
+      { id: createId("subtask"), taskId: thesisDoneTask.id, title: "Documento en Word", completed: true, createdAt: addDays(now, -13).toISOString() },
     ],
     tags: [
       { id: urgentTagId, name: "Urgente", color: "#EF4444" },
       { id: researchTagId, name: "Investigacion", color: "#8B5CF6" },
-      { id: uiTagId, name: "UI/UX", color: "#6366F1" },
+      { id: uiTagId, name: "Interfaz", color: "#6366F1" },
     ],
     taskTags: [
       { taskId: dashboardTask.id, tagId: uiTagId },
@@ -462,7 +462,7 @@ const hydrateTask = (state, task) => ({
 const ensureProjectOwnership = (state, userId, projectId) => {
   const project = state.projects.find((item) => item.id === projectId && item.userId === userId);
   if (!project) {
-    throw createError("Project not found", 404);
+    throw createError("Proyecto no encontrado", 404);
   }
   return project;
 };
@@ -470,7 +470,7 @@ const ensureProjectOwnership = (state, userId, projectId) => {
 const ensureTaskOwnership = (state, userId, taskId) => {
   const task = state.tasks.find((item) => item.id === taskId);
   if (!task) {
-    throw createError("Task not found", 404);
+    throw createError("Tarea no encontrada", 404);
   }
 
   ensureProjectOwnership(state, userId, task.projectId);
@@ -492,7 +492,7 @@ const appendActivity = (state, userId, action, entityType, entityId) => {
 const reorderTask = (state, taskId, nextStatus, nextPosition) => {
   const task = state.tasks.find((item) => item.id === taskId);
   if (!task) {
-    throw createError("Task not found", 404);
+    throw createError("Tarea no encontrada", 404);
   }
 
   const projectTasks = state.tasks.filter((item) => item.projectId === task.projectId);
@@ -549,7 +549,7 @@ const getAuthorizedUser = (state, context) => {
   const user = state.users.find((item) => item.id === userId);
 
   if (!user) {
-    throw createError("Unauthorized", 401);
+    throw createError("No autorizado", 401);
   }
 
   return user;
@@ -697,7 +697,7 @@ const routeDemoRequest = (state, path, options, context) => {
     const email = normalizeEmail(body.email ?? "");
     const user = state.users.find((item) => item.email === email && item.password === body.password);
     if (!user) {
-      throw createError("Invalid credentials", 401);
+      throw createError("Credenciales invalidas", 401);
     }
     appendActivity(state, user.id, "USER_LOGGED_IN", "AUTH", user.id);
     return buildSessionPayload(user);
@@ -706,7 +706,7 @@ const routeDemoRequest = (state, path, options, context) => {
   if (path === "/auth/register" && method === "POST") {
     const email = normalizeEmail(body.email ?? "");
     if (state.users.some((item) => item.email === email)) {
-      throw createError("Email already in use", 409);
+      throw createError("El correo ya esta en uso", 409);
     }
 
     const user = {
@@ -728,7 +728,7 @@ const routeDemoRequest = (state, path, options, context) => {
     const userId = extractUserIdFromToken(body.refreshToken, "demo-refresh");
     const user = state.users.find((item) => item.id === userId);
     if (!user) {
-      throw createError("Refresh token is invalid", 401);
+      throw createError("La sesion ya no es valida", 401);
     }
     return {
       accessToken: `demo-access:${user.id}:${Date.now()}`,
@@ -908,7 +908,7 @@ const routeDemoRequest = (state, path, options, context) => {
   if (subtaskMatch && method === "PATCH") {
     const subtask = state.subtasks.find((item) => item.id === subtaskMatch[1]);
     if (!subtask) {
-      throw createError("Subtask not found", 404);
+      throw createError("Subtarea no encontrada", 404);
     }
     ensureTaskOwnership(state, user.id, subtask.taskId);
     subtask.title = body.title ?? subtask.title;
@@ -920,7 +920,7 @@ const routeDemoRequest = (state, path, options, context) => {
   if (subtaskMatch && method === "DELETE") {
     const subtask = state.subtasks.find((item) => item.id === subtaskMatch[1]);
     if (!subtask) {
-      throw createError("Subtask not found", 404);
+      throw createError("Subtarea no encontrada", 404);
     }
     ensureTaskOwnership(state, user.id, subtask.taskId);
     state.subtasks = state.subtasks.filter((item) => item.id !== subtask.id);
@@ -936,7 +936,7 @@ const routeDemoRequest = (state, path, options, context) => {
   if (templateApplyMatch && method === "POST") {
     const template = state.templates.find((item) => item.id === templateApplyMatch[1]);
     if (!template) {
-      throw createError("Template not found", 404);
+      throw createError("Plantilla no encontrada", 404);
     }
 
     const project = {
@@ -974,7 +974,7 @@ const routeDemoRequest = (state, path, options, context) => {
     return project;
   }
 
-  throw createError("Route not found", 404);
+  throw createError("Ruta no encontrada", 404);
 };
 
 export const isDemoModeEnabled = () => (isWindowAvailable() ? window.localStorage.getItem(DEMO_MODE_KEY) === "true" : false);
@@ -991,6 +991,6 @@ export const handleDemoRequest = async (path, options = {}, context = {}) => {
     saveState(state);
     return data;
   } catch (error) {
-    throw error.status ? error : createError(error.message || "Demo request failed", 500);
+    throw error.status ? error : createError(error.message || "La solicitud del modo demo no pudo completarse", 500);
   }
 };

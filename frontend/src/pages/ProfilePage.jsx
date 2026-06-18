@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { BookOpen, CalendarRange, GraduationCap, MoonStar, Plus, SunMedium, Trash2, UserRound } from "lucide-react";
 import { apiDelete, apiGet, apiPost } from "../lib/api-client";
+import { getEventTypeLabel } from "../lib/display-labels";
 import { formatDate, toInputDateTime } from "../lib/formatters";
 import { useAsyncData } from "../hooks/useAsyncData";
 import { useAuth } from "../context/AuthContext";
@@ -278,7 +279,7 @@ export function ProfilePage() {
                   <Field label="Correo electronico">
                     <Input disabled value={user?.email ?? ""} />
                   </Field>
-                  <Field label="URL de avatar">
+                  <Field label="Enlace del avatar">
                     <Input
                       placeholder="https://..."
                       value={profileForm.avatarUrl}
@@ -427,7 +428,9 @@ export function ProfilePage() {
                             <span className="h-3 w-3 rounded-full" style={{ backgroundColor: subject.color }} />
                             <p className="font-semibold text-text">{subject.name}</p>
                           </div>
-                          <p className="mt-2 text-xs text-muted">{subject.code || "Sin codigo"} · {subject.instructor || "Sin docente"}</p>
+                          <p className="mt-2 text-xs text-muted">
+                            {subject.code || "Sin codigo"} - {subject.instructor || "Sin docente"}
+                          </p>
                           <p className="mt-2 text-xs text-muted">{subject.academicTerm?.name ?? "Sin periodo"}</p>
                         </div>
                         <Button size="icon" variant="ghost" onClick={() => deleteSubject(subject.id)} type="button">
@@ -470,7 +473,7 @@ export function ProfilePage() {
                       <select className="input" value={eventForm.type} onChange={(event) => setEventForm((current) => ({ ...current, type: event.target.value }))}>
                         {["CLASS", "EXAM", "MEETING", "PERSONAL", "DEADLINE"].map((type) => (
                           <option key={type} value={type}>
-                            {type}
+                            {getEventTypeLabel(type)}
                           </option>
                         ))}
                       </select>
@@ -522,12 +525,12 @@ export function ProfilePage() {
                             <span className="h-3 w-3 rounded-full" style={{ backgroundColor: item.color }} />
                             <p className="font-semibold text-text">{item.title}</p>
                           </div>
-                          <p className="mt-2 text-xs uppercase tracking-[0.16em] text-muted">{item.type}</p>
+                          <p className="mt-2 text-xs uppercase tracking-[0.16em] text-muted">{getEventTypeLabel(item.type)}</p>
                           <p className="mt-3 text-sm text-muted">
                             {formatDate(item.startAt, { withYear: true, withTime: true })}
                           </p>
                           <p className="mt-2 text-xs text-muted">
-                            {item.subject?.name ?? "Sin materia"} · {item.project?.title ?? "Sin proyecto"}
+                            {item.subject?.name ?? "Sin materia"} - {item.project?.title ?? "Sin proyecto"}
                           </p>
                         </div>
                         <Button size="icon" variant="ghost" onClick={() => deleteEvent(item.id)} type="button">

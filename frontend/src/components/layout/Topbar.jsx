@@ -260,7 +260,7 @@ export function Topbar({ onOpenSidebar, onToggleSidebarCollapse, sidebarCollapse
           </label>
 
           <label className="block">
-            <span className="mb-2 block text-sm text-text">URL de imagen</span>
+            <span className="mb-2 block text-sm text-text">Enlace de imagen</span>
             <input
               className="input"
               onChange={(event) => setProfileForm((current) => ({ ...current, avatarUrl: event.target.value }))}

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { apiGet } from "../lib/api-client";
+import { getEntityTypeLabel, getEventTypeLabel } from "../lib/display-labels";
 import { formatDate } from "../lib/formatters";
 import { useAsyncData } from "../hooks/useAsyncData";
 import { SkeletonCard } from "../components/ui/SkeletonCard";
@@ -22,6 +23,7 @@ const activityLabels = {
   USER_LOGGED_IN: "Sesion iniciada",
   USER_REGISTERED: "Cuenta creada",
   USER_PROFILE_UPDATED: "Perfil actualizado",
+  DOCUMENT_READY: "Documento listo",
   EMAIL_NOTIFICATION_SENT: "Correo de confirmacion enviado",
   EMAIL_NOTIFICATION_FAILED: "No se pudo enviar el correo",
 };
@@ -324,7 +326,7 @@ export function DashboardPage() {
                       </div>
                       <p className="mt-2 text-sm text-muted">{event.subjectName ?? event.projectTitle ?? "Evento personal"}</p>
                     </div>
-                    <span className="pill">{event.type}</span>
+                    <span className="pill">{getEventTypeLabel(event.type)}</span>
                   </div>
                   <p className="mt-4 text-xs text-muted">{formatDate(event.startAt, { withYear: true, withTime: true })}</p>
                 </div>
@@ -456,7 +458,7 @@ export function DashboardPage() {
               data.activity.map((item) => (
                 <div key={item.id} className="surface-tile">
                   <p className="text-sm font-semibold text-text">{activityLabels[item.action] ?? "Actualizacion registrada"}</p>
-                  <p className="mt-2 text-xs uppercase tracking-[0.18em] text-muted">{item.entityType}</p>
+                  <p className="mt-2 text-xs uppercase tracking-[0.18em] text-muted">{getEntityTypeLabel(item.entityType)}</p>
                   <p className="mt-3 text-xs text-muted">{formatDate(item.createdAt, { withYear: true, withTime: true })}</p>
                 </div>
               ))

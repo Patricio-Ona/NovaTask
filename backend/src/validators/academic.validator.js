@@ -1,6 +1,13 @@
 import { z } from "zod";
+import { isFutureOrPresentDate } from "../utils/date.js";
 
 const optionalUuid = z.string().uuid().optional().nullable();
+const futureDateTime = z.string().datetime().refine(isFutureOrPresentDate, {
+  message: "La fecha debe ser actual o futura.",
+});
+const optionalFutureDateTime = z.string().datetime().refine(isFutureOrPresentDate, {
+  message: "La fecha debe ser actual o futura.",
+}).optional();
 
 export const createTermSchema = z.object({
   body: z.object({
@@ -74,14 +81,17 @@ export const createEventSchema = z.object({
     projectId: optionalUuid,
     title: z.string().min(3).max(180),
     description: z.string().max(2000).optional().or(z.literal("")),
-    startAt: z.string().datetime(),
-    endAt: z.string().datetime(),
+    startAt: futureDateTime,
+    endAt: futureDateTime,
     allDay: z.boolean().optional(),
     type: z.enum(["CLASS", "EXAM", "MEETING", "PERSONAL", "DEADLINE"]).optional(),
     color: z.string().min(4).max(20).optional(),
   }),
   params: z.object({}).optional(),
   query: z.object({}).optional(),
+}).refine((payload) => new Date(payload.body.endAt).getTime() >= new Date(payload.body.startAt).getTime(), {
+  message: "La fecha de fin debe ser posterior o igual a la fecha de inicio.",
+  path: ["body", "endAt"],
 });
 
 export const updateEventSchema = z.object({
@@ -90,8 +100,8 @@ export const updateEventSchema = z.object({
     projectId: optionalUuid,
     title: z.string().min(3).max(180).optional(),
     description: z.string().max(2000).optional().or(z.literal("")).nullable(),
-    startAt: z.string().datetime().optional(),
-    endAt: z.string().datetime().optional(),
+    startAt: optionalFutureDateTime,
+    endAt: optionalFutureDateTime,
     allDay: z.boolean().optional(),
     type: z.enum(["CLASS", "EXAM", "MEETING", "PERSONAL", "DEADLINE"]).optional(),
     color: z.string().min(4).max(20).optional(),
@@ -100,6 +110,15 @@ export const updateEventSchema = z.object({
     eventId: z.string().uuid(),
   }),
   query: z.object({}).optional(),
+}).refine((payload) => {
+  if (!payload.body.startAt || !payload.body.endAt) {
+    return true;
+  }
+
+  return new Date(payload.body.endAt).getTime() >= new Date(payload.body.startAt).getTime();
+}, {
+  message: "La fecha de fin debe ser posterior o igual a la fecha de inicio.",
+  path: ["body", "endAt"],
 });
 
 export const eventIdSchema = z.object({

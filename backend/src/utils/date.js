@@ -4,6 +4,11 @@ export const addDays = (days) => {
   return date;
 };
 
+export const isFutureOrPresentDate = (value) => {
+  const date = value instanceof Date ? value : new Date(value);
+  return !Number.isNaN(date.getTime()) && date.getTime() >= Date.now();
+};
+
 export const startOfWeek = (date = new Date()) => {
   const result = new Date(date);
   const day = result.getDay();

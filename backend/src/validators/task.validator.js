@@ -1,7 +1,14 @@
 import { z } from "zod";
+import { isFutureOrPresentDate } from "../utils/date.js";
 
 const priorityEnum = z.enum(["LOW", "MEDIUM", "HIGH"]);
 const statusEnum = z.enum(["TODO", "IN_PROGRESS", "REVIEW", "DONE"]);
+const optionalFutureDueDate = z
+  .string()
+  .datetime()
+  .refine(isFutureOrPresentDate, { message: "La fecha debe ser actual o futura." })
+  .optional()
+  .nullable();
 
 export const listTasksSchema = z.object({
   body: z.object({}).optional(),
@@ -21,7 +28,7 @@ export const createTaskSchema = z.object({
     description: z.string().max(3000).optional().or(z.literal("")),
     priority: priorityEnum.default("MEDIUM"),
     status: statusEnum.default("TODO"),
-    dueDate: z.string().datetime().optional().nullable(),
+    dueDate: optionalFutureDueDate,
     position: z.number().int().min(0).optional(),
     tagIds: z.array(z.string().uuid()).optional(),
   }),
@@ -35,7 +42,7 @@ export const updateTaskSchema = z.object({
     description: z.string().max(3000).optional().nullable(),
     priority: priorityEnum.optional(),
     status: statusEnum.optional(),
-    dueDate: z.string().datetime().optional().nullable(),
+    dueDate: optionalFutureDueDate,
     position: z.number().int().min(0).optional(),
     tagIds: z.array(z.string().uuid()).optional(),
   }),

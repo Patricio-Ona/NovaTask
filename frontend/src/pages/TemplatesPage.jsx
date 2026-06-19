@@ -8,10 +8,12 @@ import { SkeletonCard } from "../components/ui/SkeletonCard";
 import { StatusBadge } from "../components/ui/StatusBadge";
 import { useToast } from "../context/ToastContext";
 import { useAsyncData } from "../hooks/useAsyncData";
+import { getCurrentInputDateTime, isPastInputDateTime } from "../lib/formatters";
 
 export function TemplatesPage() {
   const navigate = useNavigate();
   const { pushToast } = useToast();
+  const currentDateTime = getCurrentInputDateTime();
   const { data, loading, error, refetch } = useAsyncData(() => apiGet("/templates"), []);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [applying, setApplying] = useState(false);
@@ -29,6 +31,15 @@ export function TemplatesPage() {
   const applyTemplate = async (event) => {
     event.preventDefault();
     if (!selectedTemplate) return;
+
+    if (form.dueDate && isPastInputDateTime(form.dueDate)) {
+      pushToast({
+        title: "Fecha no valida",
+        description: "La fecha limite del proyecto debe ser actual o futura.",
+        tone: "error",
+      });
+      return;
+    }
 
     try {
       setApplying(true);
@@ -188,7 +199,7 @@ export function TemplatesPage() {
           </label>
           <label className="block">
             <span className="mb-2 block text-sm text-text">Fecha limite del proyecto</span>
-            <input className="input" onChange={(e) => setForm((c) => ({ ...c, dueDate: e.target.value }))} type="datetime-local" value={form.dueDate} />
+            <input className="input" min={currentDateTime} onChange={(e) => setForm((c) => ({ ...c, dueDate: e.target.value }))} type="datetime-local" value={form.dueDate} />
           </label>
 
           <div className="surface-tile">

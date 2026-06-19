@@ -1,4 +1,5 @@
 const monthNames = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+const pad = (unit) => String(unit).padStart(2, "0");
 
 export const formatDate = (value, options = {}) => {
   if (!value) return "Sin fecha";
@@ -20,6 +21,14 @@ export const formatDate = (value, options = {}) => {
 export const toInputDateTime = (value) => {
   if (!value) return "";
   const date = new Date(value);
-  const pad = (unit) => String(unit).padStart(2, "0");
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+};
+
+export const getCurrentInputDateTime = (value = new Date()) =>
+  `${value.getFullYear()}-${pad(value.getMonth() + 1)}-${pad(value.getDate())}T${pad(value.getHours())}:${pad(value.getMinutes())}`;
+
+export const isPastInputDateTime = (value, reference = new Date()) => {
+  if (!value) return false;
+  const parsedDate = new Date(value);
+  return !Number.isNaN(parsedDate.getTime()) && parsedDate.getTime() < reference.getTime();
 };

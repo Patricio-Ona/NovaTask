@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { BookOpen, CalendarRange, GraduationCap, MoonStar, Plus, SunMedium, Trash2, UserRound } from "lucide-react";
 import { apiDelete, apiGet, apiPost } from "../lib/api-client";
 import { getEventTypeLabel } from "../lib/display-labels";
-import { formatDate, toInputDateTime } from "../lib/formatters";
+import { formatDate, getCurrentInputDateTime, isPastInputDateTime, toInputDateTime } from "../lib/formatters";
 import { useAsyncData } from "../hooks/useAsyncData";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
@@ -47,6 +47,7 @@ const emptyEventForm = {
 export function ProfilePage() {
   const { user, updateProfile } = useAuth();
   const { pushToast } = useToast();
+  const currentDateTime = getCurrentInputDateTime();
   const theme = useAppStore((state) => state.theme);
   const setTheme = useAppStore((state) => state.setTheme);
   const overviewQuery = useAsyncData(() => apiGet("/academics/overview"), []);
@@ -145,6 +146,26 @@ export function ProfilePage() {
   const submitEvent = async (event) => {
     event.preventDefault();
     setPendingAction("event");
+
+    if (isPastInputDateTime(eventForm.startAt) || isPastInputDateTime(eventForm.endAt)) {
+      pushToast({
+        title: "Fecha no valida",
+        description: "Las fechas del evento deben ser actuales o futuras.",
+        tone: "error",
+      });
+      setPendingAction("");
+      return;
+    }
+
+    if (new Date(eventForm.endAt).getTime() < new Date(eventForm.startAt).getTime()) {
+      pushToast({
+        title: "Horario no valido",
+        description: "La fecha de fin debe ser posterior o igual a la fecha de inicio.",
+        tone: "error",
+      });
+      setPendingAction("");
+      return;
+    }
 
     try {
       await apiPost("/academics/events", {
@@ -462,10 +483,10 @@ export function ProfilePage() {
                   </Field>
                   <div className="grid gap-4 md:grid-cols-2">
                     <Field label="Inicio">
-                      <Input type="datetime-local" value={eventForm.startAt} onChange={(event) => setEventForm((current) => ({ ...current, startAt: event.target.value }))} />
+                      <Input min={currentDateTime} type="datetime-local" value={eventForm.startAt} onChange={(event) => setEventForm((current) => ({ ...current, startAt: event.target.value }))} />
                     </Field>
                     <Field label="Fin">
-                      <Input type="datetime-local" value={eventForm.endAt} onChange={(event) => setEventForm((current) => ({ ...current, endAt: event.target.value }))} />
+                      <Input min={currentDateTime} type="datetime-local" value={eventForm.endAt} onChange={(event) => setEventForm((current) => ({ ...current, endAt: event.target.value }))} />
                     </Field>
                   </div>
                   <div className="grid gap-4 md:grid-cols-3">

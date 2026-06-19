@@ -13,7 +13,7 @@ import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-
 import { CSS } from "@dnd-kit/utilities";
 import { CalendarClock, GraduationCap, LayoutGrid, ListTodo, Search } from "lucide-react";
 import { apiDelete, apiGet, apiPatch, apiPost } from "../lib/api-client";
-import { formatDate, toInputDateTime } from "../lib/formatters";
+import { formatDate, getCurrentInputDateTime, isPastInputDateTime, toInputDateTime } from "../lib/formatters";
 import { sendBrowserNotification } from "../lib/notifications";
 import { useAsyncData } from "../hooks/useAsyncData";
 import { useAppStore } from "../store/useAppStore";
@@ -155,6 +155,7 @@ export function ProjectsPage({
   shellKicker = "Espacio de trabajo",
   shellDescription = "Organiza tus proyectos, crea tareas, usa filtros y sigue el avance desde un tablero visual.",
 }) {
+  const currentDateTime = getCurrentInputDateTime();
   const location = useLocation();
   const navigate = useNavigate();
   const { pushToast } = useToast();
@@ -370,6 +371,16 @@ export function ProjectsPage({
 
   const submitProject = async (event) => {
     event.preventDefault();
+
+    if (projectForm.dueDate && isPastInputDateTime(projectForm.dueDate)) {
+      pushToast({
+        title: "Fecha no valida",
+        description: "La fecha limite del proyecto debe ser actual o futura.",
+        tone: "error",
+      });
+      return;
+    }
+
     try {
       const payload = {
         ...projectForm,
@@ -412,6 +423,16 @@ export function ProjectsPage({
 
   const submitTask = async (event) => {
     event.preventDefault();
+
+    if (taskForm.dueDate && isPastInputDateTime(taskForm.dueDate)) {
+      pushToast({
+        title: "Fecha no valida",
+        description: "La fecha limite de la tarea debe ser actual o futura.",
+        tone: "error",
+      });
+      return;
+    }
+
     try {
       const previousStatus = taskModal.mode === "edit" ? taskModal.task?.status : null;
       const payload = {
@@ -1101,6 +1122,7 @@ export function ProjectsPage({
               <span className="mb-2 block text-sm text-text">Fecha limite</span>
               <input
                 className="input"
+                min={currentDateTime}
                 onChange={(e) => setProjectForm((c) => ({ ...c, dueDate: e.target.value }))}
                 type="datetime-local"
                 value={projectForm.dueDate}
@@ -1172,6 +1194,7 @@ export function ProjectsPage({
               <span className="mb-2 block text-sm text-text">Fecha limite</span>
               <input
                 className="input"
+                min={currentDateTime}
                 onChange={(e) => setTaskForm((c) => ({ ...c, dueDate: e.target.value }))}
                 type="datetime-local"
                 value={taskForm.dueDate}

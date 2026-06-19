@@ -1,6 +1,6 @@
 # NovaTask
 
-NovaTask es una plataforma SaaS academica orientada a la organizacion universitaria. Permite gestionar proyectos, tareas, materias, eventos y entregas desde una interfaz moderna, responsive y pensada como producto de tesis para Ingenieria en Sistemas.
+NovaTask es una plataforma SaaS acadmica orientada a la organización universitaria. Permite gestionar proyectos, tareas, materias, eventos y entregas desde una interfaz moderna, responsive y pensada como producto de tesis para Ingeniería en Sistemas.
 
 ## Enlaces oficiales
 
@@ -12,34 +12,34 @@ NovaTask es una plataforma SaaS academica orientada a la organizacion universita
 
 El repositorio ya incluye:
 
-- frontend en React 18 + Vite + Tailwind CSS + Framer Motion + Recharts + Zustand + @dnd-kit
-- backend en Node.js + Express
-- persistencia en PostgreSQL + Prisma
-- autenticacion propia con JWT + bcryptjs
-- modulos de Dashboard, Proyectos, Kanban, Lista, Calendario, Perfil, Plantillas y Analiticas
-- estructura preparada para despliegue en produccion
+- Frontend en React 18 + Vite + Tailwind CSS + Framer Motion + Recharts + Zustand + @dnd-kit
+- Backend en Node.js + Express
+- Persistencia en PostgreSQL + Prisma
+- Autenticación propia con JWT + bcryptjs
+- MÓdulos de Dashboard, Proyectos, Kanban, Lista, Calendario, Perfil, Plantillas y Analíticas
+- Estructura preparada para despliegue en producción
 
 ## Funcionalidades principales
 
-- registro e inicio de sesion con correo y contrasena
-- proteccion de rutas privadas
+- Registro e inicio de sesión con correo y contraseña.
+- Protección de rutas privadas
 - CRUD completo de proyectos
 - CRUD completo de tareas y subtareas
-- tablero Kanban con arrastrar y soltar
-- vista de lista con filtros
-- calendario mensual y semanal
-- plantillas academicas reutilizables
-- analiticas visuales
-- modo oscuro y modo claro
+- Tablero Kanban con arrastrar y soltar
+- Vista de lista con filtros
+- Calendario mensual y semanal
+- Plantillas académicas reutilizables
+- Analiticas visuales
+- Modo oscuro y modo claro
 
 ## Estructura del repositorio
 
-- frontend/: aplicacion cliente
+- frontend/: aplicación cliente
 - backend/: API REST, controladores, servicios, validaciones y Prisma
 - database/schema.sql: esquema SQL base
-- db/schema.sql: copia de apoyo para documentacion
-- docs/: documentos tecnicos y material academico
-- render.yaml: configuracion de despliegue del backend
+- db/schema.sql: copia de apoyo para documentación
+- docs/: documentos técnicos y material académico
+- render.yaml: configuración de despliegue del backend
 - docker-compose.yml: stack local con base de datos
 
 ## Variables de entorno
@@ -79,9 +79,9 @@ Variables principales:
 
 ### Ejemplo consolidado
 
-Tambien existe un ejemplo general en .env.example
+También existe un ejemplo general en .env.example
 
-## Instalacion local
+## Instalación local
 
 ### Backend
 
@@ -110,10 +110,10 @@ bash
 docker compose up --build
 
 
-## Usuario de prueba del seed
+## Usuario de prueba
 
-- correo: patricio@novatask.dev
-- contrasena: Patricio123*
+- Correo: patricio@novatask.dev
+- Contraseña: Patricio123*
 
 ## Scripts utiles
 
@@ -138,35 +138,35 @@ docker compose up --build
 
 ### Frontend
 
-- directorio principal: frontend/
-- archivo de configuracion: frontend/vercel.json
-- variable clave: VITE_API_URL
+- Directorio principal: frontend/
+- Archivo de configuración: frontend/vercel.json
+- Variable clave: VITE_API_URL
 
 ### Backend
 
-- directorio principal: backend/
-- archivo de configuracion principal: render.yaml
-- variables clave: DATABASE_URL, CLIENT_URL, CLIENT_URLS, JWT_ACCESS_SECRET, JWT_REFRESH_SECRET
+- Directorio principal: backend/
+- Archivo de configuración principal: render.yaml
+- Variables clave: DATABASE_URL, CLIENT_URL, CLIENT_URLS, JWT_ACCESS_SECRET, JWT_REFRESH_SECRET
 
 ## Checklist antes de publicar cambios
 
 1. Verificar variables de entorno del frontend y backend.
-2. Confirmar conexion correcta con PostgreSQL.
+2. Confirmar conexión correcta con PostgreSQL.
 3. Ejecutar migraciones y seed si aplica.
-4. Probar registro e inicio de sesion.
-5. Probar creacion de proyectos y tareas.
+4. Probar registro e inicio de sesión.
+5. Probar creación de proyectos y tareas.
 6. Revisar Kanban, calendario, lista, perfil y plantillas.
 7. Ejecutar npm run build en frontend antes de desplegar.
 
 ## Seguridad y arquitectura
 
-- contrasenas hasheadas con bcryptjs
-- autenticacion basada en JWT
-- validacion con Zod
+- Contraseñas hasheadas con bcryptjs
+- Autenticación basada en JWT
+- Validación con Zod
 - Helmet activo en backend
 - CORS configurable por origen
-- manejo centralizado de errores
-- arquitectura separada por rutas, controladores, servicios, middleware, validadores y utilidades
+- Manejo centralizado de errores
+- Arquitectura separada por rutas, controladores, servicios, middleware, validadores y utilidades
 
 ## Base de datos
 
@@ -191,6 +191,6 @@ Fuentes principales del modelo de datos:
 - backend/prisma/schema.prisma
 - database/schema.sql
 
-## Observacion
+## Observación
 
-Este repositorio corresponde al desarrollo practico de NovaTask como plataforma academica funcional, preparada para pruebas, documentación y despliegue web.
+Este repositorio corresponde al desarrollo práctico de NovaTask como plataforma académica funcional, preparada para pruebas, documentación y despliegue web.

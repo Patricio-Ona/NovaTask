@@ -1,6 +1,12 @@
 # NovaTask
 
-NovaTask es una plataforma SaaS academica para organizar proyectos, tareas, materias, eventos y entregas universitarias desde una experiencia moderna pensada para una tesis de Ingenieria en Sistemas.
+NovaTask es una plataforma SaaS academica orientada a la organizacion universitaria. Permite gestionar proyectos, tareas, materias, eventos y entregas desde una interfaz moderna, responsive y pensada como producto de tesis para Ingenieria en Sistemas.
+
+## Enlaces oficiales
+
+- GitHub: [https://github.com/Patricio-Ona/NovaTask](https://github.com/Patricio-Ona/NovaTask)
+- Frontend en Vercel: [https://nova-task-eight.vercel.app/](https://nova-task-eight.vercel.app/)
+- Backend publicado: [https://novatask-api.onrender.com/api/health](https://novatask-api.onrender.com/api/health)
 
 ## Estado del proyecto
 
@@ -10,24 +16,39 @@ El repositorio ya incluye:
 - backend en `Node.js + Express`
 - persistencia en `PostgreSQL + Prisma`
 - autenticacion propia con `JWT + bcryptjs`
-- `Kanban`, `Lista`, `Calendario`, `Dashboard`, `Perfil`, `Plantillas` y `Analiticas`
-- archivos listos para despliegue en `Vercel`, `Netlify`, `Render`, `Railway` y `Docker`
+- modulos de `Dashboard`, `Proyectos`, `Kanban`, `Lista`, `Calendario`, `Perfil`, `Plantillas` y `Analiticas`
+- estructura preparada para despliegue en produccion
 
-## Estructura
+## Funcionalidades principales
+
+- registro e inicio de sesion con correo y contrasena
+- proteccion de rutas privadas
+- CRUD completo de proyectos
+- CRUD completo de tareas y subtareas
+- tablero Kanban con arrastrar y soltar
+- vista de lista con filtros
+- calendario mensual y semanal
+- plantillas academicas reutilizables
+- analiticas visuales
+- modo oscuro y modo claro
+
+## Estructura del repositorio
 
 - `frontend/`: aplicacion cliente
-- `backend/`: API REST, Prisma, seed, validaciones y servicios
-- `database/schema.sql`: esquema SQL principal
+- `backend/`: API REST, controladores, servicios, validaciones y Prisma
+- `database/schema.sql`: esquema SQL base
 - `db/schema.sql`: copia de apoyo para documentacion
-- `docs/`: documentos tecnicos
-- `render.yaml`: blueprint para Render
-- `docker-compose.yml`: stack local con PostgreSQL
+- `docs/`: documentos tecnicos y material academico
+- `render.yaml`: configuracion de despliegue del backend
+- `docker-compose.yml`: stack local con base de datos
 
 ## Variables de entorno
 
 ### Frontend
 
-Revisa [frontend/.env.example](/C:/Users/59396/Documents/Codex/2026-04-20-files-mentioned-by-the-user-plan/frontend/.env.example)
+Archivo de referencia: `frontend/.env.example`
+
+Variables principales:
 
 - `VITE_API_URL`
 - `VITE_DEMO_MODE`
@@ -36,7 +57,9 @@ Revisa [frontend/.env.example](/C:/Users/59396/Documents/Codex/2026-04-20-files-
 
 ### Backend
 
-Revisa [backend/.env.example](/C:/Users/59396/Documents/Codex/2026-04-20-files-mentioned-by-the-user-plan/backend/.env.example)
+Archivo de referencia: `backend/.env.example`
+
+Variables principales:
 
 - `DATABASE_URL`
 - `PORT`
@@ -56,7 +79,7 @@ Revisa [backend/.env.example](/C:/Users/59396/Documents/Codex/2026-04-20-files-m
 
 ### Ejemplo consolidado
 
-Tambien tienes un ejemplo raiz en [.env.example](/C:/Users/59396/Documents/Codex/2026-04-20-files-mentioned-by-the-user-plan/.env.example)
+Tambien existe un ejemplo general en `.env.example`
 
 ## Instalacion local
 
@@ -81,17 +104,11 @@ copy .env.example .env
 npm run dev
 ```
 
-### Docker completo
+### Docker
 
 ```bash
 docker compose up --build
 ```
-
-Servicios:
-
-- frontend: `http://localhost:8080`
-- backend: `http://localhost:4000/api`
-- postgres: `localhost:5432`
 
 ## Usuario de prueba del seed
 
@@ -119,116 +136,37 @@ Servicios:
 
 ## Despliegue
 
-### Opcion recomendada
+### Frontend
 
-- frontend en `Vercel`
-- backend en `Render` o `Railway`
-- base de datos en `Render PostgreSQL`, `Railway PostgreSQL` o `Neon`
+- directorio principal: `frontend/`
+- archivo de configuracion: `frontend/vercel.json`
+- variable clave: `VITE_API_URL`
 
-### Frontend en Vercel
+### Backend
 
-1. Importa el repositorio en Vercel.
-2. Define `frontend/` como `Root Directory`.
-3. La app ya incluye [frontend/vercel.json](/C:/Users/59396/Documents/Codex/2026-04-20-files-mentioned-by-the-user-plan/frontend/vercel.json) para rutas SPA.
-4. Configura estas variables:
-   - `VITE_API_URL=https://tu-backend.onrender.com/api`
-   - `VITE_ROUTER_MODE=browser`
-   - `VITE_APP_BASE_PATH=/`
+- directorio principal: `backend/`
+- archivo de configuracion principal: `render.yaml`
+- variables clave: `DATABASE_URL`, `CLIENT_URL`, `CLIENT_URLS`, `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`
 
-### Frontend en Netlify
+## Checklist antes de publicar cambios
 
-1. Importa el repositorio en Netlify.
-2. Usa `frontend/` como `Base directory`.
-3. Ya existe [netlify.toml](/C:/Users/59396/Documents/Codex/2026-04-20-files-mentioned-by-the-user-plan/netlify.toml) y `frontend/public/_redirects`.
-4. Variables:
-   - `VITE_API_URL=https://tu-backend.onrender.com/api`
-   - `VITE_ROUTER_MODE=browser`
-   - `VITE_APP_BASE_PATH=/`
+1. Verificar variables de entorno del frontend y backend.
+2. Confirmar conexion correcta con PostgreSQL.
+3. Ejecutar migraciones y seed si aplica.
+4. Probar registro e inicio de sesion.
+5. Probar creacion de proyectos y tareas.
+6. Revisar Kanban, calendario, lista, perfil y plantillas.
+7. Ejecutar `npm run build` en frontend antes de desplegar.
 
-### Frontend en GitHub Pages
-
-GitHub Pages requiere `HashRouter` para evitar problemas de rutas:
-
-1. El repositorio ya incluye el workflow [deploy-pages.yml](/C:/Users/59396/Documents/Codex/2026-04-20-files-mentioned-by-the-user-plan/.github/workflows/deploy-pages.yml).
-2. En GitHub ve a `Settings > Pages`.
-3. En `Build and deployment`, selecciona `GitHub Actions`.
-4. En `Settings > Secrets and variables > Actions > Variables`, crea:
-   - `VITE_API_URL=https://tu-backend.onrender.com/api`
-5. El workflow ya construye con:
-   - `VITE_ROUTER_MODE=hash`
-   - `VITE_APP_BASE_PATH=/NovaTask/`
-6. Cada `push` a `main` publicara el frontend automaticamente.
-7. El proyecto ya incluye `frontend/public/.nojekyll`.
-
-URL esperada:
-
-```text
-https://patricio-ona.github.io/NovaTask/
-```
-
-Nota:
-
-- `GitHub Pages` solo publica el frontend.
-- Para que el sistema funcione completo, el backend debe seguir desplegado en `Render` o `Railway`.
-
-### Backend en Render
-
-1. Sube el repositorio a GitHub.
-2. Importa el repo en Render.
-3. Usa [render.yaml](/C:/Users/59396/Documents/Codex/2026-04-20-files-mentioned-by-the-user-plan/render.yaml).
-4. Solo completa:
-   - `CLIENT_URL`
-   - `CLIENT_URLS`
-   - variables SMTP si usaras correo
-
-### Backend en Railway
-
-1. Crea un servicio apuntando a `backend/`.
-2. Ya existen [backend/railway.json](/C:/Users/59396/Documents/Codex/2026-04-20-files-mentioned-by-the-user-plan/backend/railway.json) y [backend/nixpacks.toml](/C:/Users/59396/Documents/Codex/2026-04-20-files-mentioned-by-the-user-plan/backend/nixpacks.toml).
-3. Configura:
-   - `DATABASE_URL`
-   - `CLIENT_URL`
-   - `CLIENT_URLS`
-   - `JWT_ACCESS_SECRET`
-   - `JWT_REFRESH_SECRET`
-
-### Docker
-
-Tambien quedan listos:
-
-- [backend/Dockerfile](/C:/Users/59396/Documents/Codex/2026-04-20-files-mentioned-by-the-user-plan/backend/Dockerfile)
-- [frontend/Dockerfile](/C:/Users/59396/Documents/Codex/2026-04-20-files-mentioned-by-the-user-plan/frontend/Dockerfile)
-- [docker-compose.yml](/C:/Users/59396/Documents/Codex/2026-04-20-files-mentioned-by-the-user-plan/docker-compose.yml)
-
-## Checklist antes de publicar
-
-1. Subir el repositorio a GitHub.
-2. Crear la base PostgreSQL.
-3. Desplegar `backend/`.
-4. Configurar `DATABASE_URL`, `CLIENT_URL`, `CLIENT_URLS` y secretos JWT.
-5. Desplegar `frontend/`.
-6. Configurar `VITE_API_URL` apuntando al backend publicado.
-7. Probar:
-   - registro
-   - login
-   - crear proyecto
-   - mover tareas en kanban
-   - vista lista
-   - calendario
-   - perfil
-   - plantillas
-   - logout
-
-## Seguridad y produccion
+## Seguridad y arquitectura
 
 - contrasenas hasheadas con `bcryptjs`
-- tokens de acceso y refresh separados
+- autenticacion basada en `JWT`
 - validacion con `Zod`
-- `Helmet` activo
+- `Helmet` activo en backend
 - `CORS` configurable por origen
 - manejo centralizado de errores
-- rutas SPA preparadas para Vercel y Netlify
-- soporte de `BrowserRouter` o `HashRouter` segun el host
+- arquitectura separada por rutas, controladores, servicios, middleware, validadores y utilidades
 
 ## Base de datos
 
@@ -248,4 +186,11 @@ Modelos principales:
 - `templates`
 - `template_tasks`
 
-La fuente principal del modelo relacional esta en [backend/prisma/schema.prisma](/C:/Users/59396/Documents/Codex/2026-04-20-files-mentioned-by-the-user-plan/backend/prisma/schema.prisma) y el SQL completo en [database/schema.sql](/C:/Users/59396/Documents/Codex/2026-04-20-files-mentioned-by-the-user-plan/database/schema.sql).
+Fuentes principales del modelo de datos:
+
+- `backend/prisma/schema.prisma`
+- `database/schema.sql`
+
+## Observacion
+
+Este repositorio corresponde al desarrollo practico de NovaTask como plataforma academica funcional, preparada para pruebas, documentacion de tesis y despliegue web.

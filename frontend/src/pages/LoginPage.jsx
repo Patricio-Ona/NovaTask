@@ -1,13 +1,17 @@
 import { motion } from "framer-motion";
+import { MoonStar, SunMedium } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
+import { useAppStore } from "../store/useAppStore";
 
 export function LoginPage() {
   const navigate = useNavigate();
   const { login, register } = useAuth();
   const { pushToast } = useToast();
+  const theme = useAppStore((state) => state.theme);
+  const toggleTheme = useAppStore((state) => state.toggleTheme);
   const [mode, setMode] = useState("login");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -109,6 +113,27 @@ export function LoginPage() {
           initial={{ opacity: 0, x: 18 }}
           transition={{ duration: 0.25 }}
         >
+          <div className="mb-6 flex justify-end">
+            <button
+              aria-label={`Cambiar a modo ${theme === "dark" ? "claro" : "oscuro"}`}
+              className="inline-flex items-center gap-2 rounded-2xl border border-border bg-surface/75 px-4 py-2.5 text-sm font-semibold text-text shadow-card transition hover:-translate-y-0.5 hover:border-primary/45 hover:text-primary"
+              onClick={toggleTheme}
+              type="button"
+            >
+              {theme === "dark" ? (
+                <>
+                  <SunMedium className="h-4 w-4" />
+                  <span>Modo claro</span>
+                </>
+              ) : (
+                <>
+                  <MoonStar className="h-4 w-4" />
+                  <span>Modo oscuro</span>
+                </>
+              )}
+            </button>
+          </div>
+
           <div className="flex items-center gap-3 rounded-2xl border border-border bg-surface/70 p-1 shadow-card">
             {[
               ["login", "Iniciar sesion"],

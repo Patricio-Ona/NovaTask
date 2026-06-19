@@ -65,11 +65,33 @@ const endOfMonthGrid = (date) => {
 
 const itemDate = (item) => new Date(item.startAt ?? item.dueDate);
 const defaultActivityColor = "#6366F1";
+const clampTwoLinesStyle = {
+  display: "-webkit-box",
+  WebkitBoxOrient: "vertical",
+  WebkitLineClamp: 2,
+  overflow: "hidden",
+};
 
-const getActivityMeta = (items) => {
+const withAlpha = (color, alpha) => {
+  if (!color?.startsWith("#")) return color;
+
+  if (color.length === 4) {
+    const [_, red, green, blue] = color;
+    return `#${red}${red}${green}${green}${blue}${blue}${alpha}`;
+  }
+
+  if (color.length === 7) {
+    return `${color}${alpha}`;
+  }
+
+  return color;
+};
+
+const getActivityMeta = (items, theme) => {
   const tasks = items.filter((item) => item.itemType === "TASK").length;
   const events = items.length - tasks;
   const accent = items[0]?.color ?? items[0]?.projectColor ?? defaultActivityColor;
+  const isLight = theme === "light";
 
   return {
     total: items.length,
@@ -79,16 +101,58 @@ const getActivityMeta = (items) => {
     surfaceStyle:
       items.length > 0
         ? {
-            background: `linear-gradient(160deg, ${accent}26 0%, rgba(15, 23, 42, 0.88) 55%, rgba(15, 23, 42, 0.98) 100%)`,
+            background: isLight
+              ? `radial-gradient(circle at top right, ${withAlpha(accent, "1A")} 0%, transparent 42%), linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(244, 247, 255, 0.96) 100%)`
+              : `linear-gradient(160deg, ${withAlpha(accent, "26")} 0%, rgba(15, 23, 42, 0.88) 55%, rgba(15, 23, 42, 0.98) 100%)`,
+            boxShadow: isLight ? "0 16px 30px rgba(148, 163, 184, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.96)" : undefined,
           }
         : undefined,
   };
 };
 
 const dayLabel = (date) => weekDays[date.getDay() === 0 ? 6 : date.getDay() - 1];
+const getInfoPanelStyle = (theme, accent = defaultActivityColor) => ({
+  background:
+    theme === "light"
+      ? `radial-gradient(circle at top right, ${withAlpha(accent, "14")} 0%, transparent 38%), linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(246, 249, 255, 0.96) 100%)`
+      : `linear-gradient(180deg, rgba(15, 23, 42, 0.62) 0%, rgba(15, 23, 42, 0.82) 100%)`,
+  boxShadow: theme === "light" ? "0 16px 30px rgba(148, 163, 184, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.96)" : undefined,
+});
+
+const getCounterSurfaceStyle = (theme, accent = defaultActivityColor) => ({
+  borderColor: theme === "light" ? withAlpha(accent, "22") : undefined,
+  background:
+    theme === "light"
+      ? `radial-gradient(circle at top right, ${withAlpha(accent, "12")} 0%, transparent 42%), linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(244, 247, 255, 0.94) 100%)`
+      : "rgba(15, 23, 42, 0.65)",
+  boxShadow: theme === "light" ? "0 14px 28px rgba(148, 163, 184, 0.12)" : undefined,
+});
+
+const getDayCardBaseStyle = (theme) => ({
+  background:
+    theme === "light"
+      ? "linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(247, 249, 255, 0.96) 100%)"
+      : "rgba(15, 23, 42, 0.55)",
+  boxShadow: theme === "light" ? "0 12px 26px rgba(148, 163, 184, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.96)" : undefined,
+});
+
+const getDayTagStyle = (accent, theme) => ({
+  backgroundColor: theme === "light" ? withAlpha(accent, "12") : withAlpha(accent, "20"),
+  border: `1px solid ${withAlpha(accent, theme === "light" ? "24" : "32")}`,
+  color: theme === "light" ? "rgb(15 23 42)" : accent,
+  boxShadow: theme === "light" ? `0 10px 18px ${withAlpha(accent, "10")}` : undefined,
+});
+
+const getMiniBadgeStyle = (accent, theme) => ({
+  backgroundColor: theme === "light" ? "rgba(255, 255, 255, 0.96)" : "rgba(2, 6, 23, 0.45)",
+  border: `1px solid ${theme === "light" ? withAlpha(accent, "22") : "rgba(255,255,255,0.08)"}`,
+  color: theme === "light" ? "rgb(71 85 105)" : "rgba(226, 232, 240, 0.9)",
+  boxShadow: theme === "light" ? "0 10px 18px rgba(148, 163, 184, 0.14)" : undefined,
+});
 
 export function CalendarPage() {
   const { data, loading, error, refetch } = useAsyncData(() => apiGet("/calendar"), []);
+  const theme = useAppStore((state) => state.theme);
   const calendarView = useAppStore((state) => state.calendarView);
   const setCalendarView = useAppStore((state) => state.setCalendarView);
   const [currentMonth, setCurrentMonth] = useState(() => startOfDay(new Date()));
@@ -282,12 +346,12 @@ export function CalendarPage() {
                     {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
                   </h3>
                 </div>
-                <div className="rounded-2xl border border-border bg-slate-900/65 px-4 py-3 text-sm text-muted">
+                <div className="rounded-2xl border border-border px-4 py-3 text-sm text-muted" style={getCounterSurfaceStyle(theme)}>
                   {monthDays.filter((day) => day.items.length).length} dias con actividad
                 </div>
               </div>
 
-              <div className="mt-6 rounded-3xl border border-border bg-slate-950/35 p-4">
+              <div className="mt-6 rounded-3xl border border-border p-4" style={getInfoPanelStyle(theme)}>
                 <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                   <div>
                     <p className="text-sm font-semibold text-text">Calendario completo del mes</p>
@@ -296,11 +360,11 @@ export function CalendarPage() {
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-2 text-xs uppercase tracking-[0.14em] text-muted">
-                    <span className="inline-flex items-center gap-2 rounded-full border border-border bg-slate-900/65 px-3 py-2">
+                    <span className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-2" style={getMiniBadgeStyle(defaultActivityColor, theme)}>
                       <span className="h-2.5 w-2.5 rounded-full bg-primary" />
                       Fecha con actividad
                     </span>
-                    <span className="inline-flex items-center gap-2 rounded-full border border-border bg-slate-900/65 px-3 py-2">
+                    <span className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-2" style={getMiniBadgeStyle("#8B5CF6", theme)}>
                       <span className="h-2.5 w-2.5 rounded-full bg-secondary" />
                       Dia actual
                     </span>
@@ -323,18 +387,29 @@ export function CalendarPage() {
                       const inCurrentMonth = day.date.getMonth() === currentMonth.getMonth();
                       const isSelected = isSameDay(day.date, selectedDate);
                       const isToday = isSameDay(day.date, new Date());
-                      const activity = getActivityMeta(day.items);
+                      const activity = getActivityMeta(day.items, theme);
 
                       return (
                         <button
                           key={day.date.toISOString()}
-                          className={`relative min-h-[140px] overflow-hidden rounded-3xl border p-3 text-left transition ${
-                            isSelected
-                              ? "border-primary/55 shadow-[0_18px_45px_rgba(99,102,241,0.18)]"
-                              : activity.total
-                                ? "border-white/10 bg-slate-900/72 hover:border-primary/35"
-                                : "border-border bg-slate-900/55 hover:border-primary/25"
+                          className={`relative min-h-[186px] overflow-hidden rounded-3xl border p-3 text-left transition ${
+                            isSelected ? "border-primary/55" : activity.total ? "hover:border-primary/35" : "hover:border-primary/25"
                           } ${inCurrentMonth ? "text-text" : "text-muted/55"}`}
+                          style={{
+                            ...(!activity.total ? getDayCardBaseStyle(theme) : {}),
+                            boxShadow: isSelected
+                              ? theme === "light"
+                                ? "0 20px 36px rgba(99, 102, 241, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.96)"
+                                : "0 18px 45px rgba(99, 102, 241, 0.18)"
+                              : !activity.total
+                                ? getDayCardBaseStyle(theme).boxShadow
+                                : activity.surfaceStyle?.boxShadow,
+                            borderColor: isSelected
+                              ? withAlpha(defaultActivityColor, "80")
+                              : activity.total && theme === "light"
+                                ? withAlpha(activity.accent, "24")
+                                : undefined,
+                          }}
                           onClick={() => setSelectedDate(startOfDay(day.date))}
                           type="button"
                         >
@@ -348,7 +423,9 @@ export function CalendarPage() {
                                   isToday
                                     ? "bg-secondary/25 text-secondary"
                                     : activity.total
-                                      ? "text-white"
+                                      ? theme === "light"
+                                        ? "text-text"
+                                        : "text-white"
                                       : ""
                                 }`}
                                 style={
@@ -363,7 +440,9 @@ export function CalendarPage() {
                                 {day.date.getDate()}
                               </span>
                               {activity.total ? (
-                                <span className="pill border-white/10 bg-slate-950/55 text-text">{activity.total}</span>
+                                <span className="pill text-text" style={getMiniBadgeStyle(activity.accent, theme)}>
+                                  {activity.total}
+                                </span>
                               ) : null}
                             </div>
 
@@ -378,28 +457,25 @@ export function CalendarPage() {
                             </div>
 
                             <div className="mt-3 space-y-2">
-                              {day.items.slice(0, 2).map((item) => (
+                              {day.items.slice(0, 1).map((item) => (
                                 <div
                                   key={item.id}
-                                  className="rounded-2xl px-3 py-2 text-[11px] font-semibold backdrop-blur-sm"
-                                  style={{
-                                    backgroundColor: `${item.color ?? item.projectColor ?? defaultActivityColor}20`,
-                                    color: item.color ?? item.projectColor ?? defaultActivityColor,
-                                  }}
+                                  className="rounded-2xl px-3 py-2 text-[11px] font-semibold leading-4 backdrop-blur-sm"
+                                  style={getDayTagStyle(item.color ?? item.projectColor ?? defaultActivityColor, theme)}
                                 >
-                                  {item.title}
+                                  <span style={clampTwoLinesStyle}>{item.title}</span>
                                 </div>
                               ))}
                             </div>
 
                             <div className="mt-auto pt-4">
-                              {day.items.length > 2 ? (
-                                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">+{day.items.length - 2} mas</p>
+                              {day.items.length > 1 ? (
+                                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">+{day.items.length - 1} mas</p>
                               ) : null}
                               {activity.total ? (
-                                <div className="mt-2 flex flex-wrap items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-200/85">
-                                  {activity.tasks ? <span className="rounded-full bg-slate-950/45 px-2 py-1">{activity.tasks} tareas</span> : null}
-                                  {activity.events ? <span className="rounded-full bg-slate-950/45 px-2 py-1">{activity.events} eventos</span> : null}
+                                <div className="mt-2 flex flex-wrap items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.14em]">
+                                  {activity.tasks ? <span className="rounded-full px-2 py-1" style={getMiniBadgeStyle(activity.accent, theme)}>{activity.tasks} tareas</span> : null}
+                                  {activity.events ? <span className="rounded-full px-2 py-1" style={getMiniBadgeStyle(activity.accent, theme)}>{activity.events} eventos</span> : null}
                                 </div>
                               ) : (
                                 <p className="text-[11px] text-muted">Sin actividad</p>
@@ -414,7 +490,7 @@ export function CalendarPage() {
               </div>
             </article>
 
-            <DayAgenda items={selectedItems} title={formatDate(selectedDate.toISOString(), { withYear: true })} />
+            <DayAgenda items={selectedItems} theme={theme} title={formatDate(selectedDate.toISOString(), { withYear: true })} />
           </section>
         ) : (
           <section className="grid gap-5 xl:grid-cols-[1.15fr,0.85fr]">
@@ -424,12 +500,12 @@ export function CalendarPage() {
                   <p className="section-kicker">Vista semanal</p>
                   <h3 className="mt-3 text-3xl font-semibold text-text">Semana en curso</h3>
                 </div>
-                <div className="rounded-2xl border border-border bg-slate-900/65 px-4 py-3 text-sm text-muted">
+                <div className="rounded-2xl border border-border px-4 py-3 text-sm text-muted" style={getCounterSurfaceStyle(theme, "#22C55E")}>
                   {weekDaysData.reduce((sum, day) => sum + day.items.length, 0)} elementos programados
                 </div>
               </div>
 
-              <div className="mt-6 rounded-3xl border border-border bg-slate-950/35 p-4">
+              <div className="mt-6 rounded-3xl border border-border p-4" style={getInfoPanelStyle(theme, "#22C55E")}>
                 <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                   <div>
                     <p className="text-sm font-semibold text-text">Lectura semanal continua</p>
@@ -438,11 +514,11 @@ export function CalendarPage() {
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-2 text-xs uppercase tracking-[0.14em] text-muted">
-                    <span className="inline-flex items-center gap-2 rounded-full border border-border bg-slate-900/65 px-3 py-2">
+                    <span className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-2" style={getMiniBadgeStyle(defaultActivityColor, theme)}>
                       <span className="h-2.5 w-2.5 rounded-full bg-primary" />
                       Dia seleccionado
                     </span>
-                    <span className="inline-flex items-center gap-2 rounded-full border border-border bg-slate-900/65 px-3 py-2">
+                    <span className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-2" style={getMiniBadgeStyle("#22C55E", theme)}>
                       <span className="h-2.5 w-2.5 rounded-full bg-success" />
                       Actividad programada
                     </span>
@@ -454,20 +530,31 @@ export function CalendarPage() {
                 <div className="min-w-[920px]">
                   <div className="grid grid-cols-7 gap-3">
                     {weekDaysData.map((day) => {
-                      const activity = getActivityMeta(day.items);
+                      const activity = getActivityMeta(day.items, theme);
                       const isSelected = isSameDay(day.date, selectedDate);
                       const isToday = isSameDay(day.date, new Date());
 
                       return (
                         <button
                           key={day.date.toISOString()}
-                          className={`relative min-h-[232px] overflow-hidden rounded-3xl border p-4 text-left transition ${
-                            isSelected
-                              ? "border-primary/50 bg-primary/12 shadow-[0_18px_45px_rgba(99,102,241,0.16)]"
-                              : activity.total
-                                ? "border-white/10 bg-slate-900/72 hover:border-primary/30"
-                                : "border-border bg-slate-900/55 hover:border-primary/25"
+                          className={`relative min-h-[248px] overflow-hidden rounded-3xl border p-4 text-left transition ${
+                            isSelected ? "border-primary/50" : activity.total ? "hover:border-primary/30" : "hover:border-primary/25"
                           }`}
+                          style={{
+                            ...(!activity.total ? getDayCardBaseStyle(theme) : {}),
+                            boxShadow: isSelected
+                              ? theme === "light"
+                                ? "0 20px 36px rgba(99, 102, 241, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.96)"
+                                : "0 18px 45px rgba(99, 102, 241, 0.16)"
+                              : !activity.total
+                                ? getDayCardBaseStyle(theme).boxShadow
+                                : activity.surfaceStyle?.boxShadow,
+                            borderColor: isSelected
+                              ? withAlpha(defaultActivityColor, "80")
+                              : activity.total && theme === "light"
+                                ? withAlpha(activity.accent, "24")
+                                : undefined,
+                          }}
                           onClick={() => setSelectedDate(startOfDay(day.date))}
                           type="button"
                         >
@@ -497,12 +584,14 @@ export function CalendarPage() {
 
                               <div className="flex flex-col items-end gap-2">
                                 {activity.total ? (
-                                  <span className="pill border-white/10 bg-slate-950/55 text-text">{activity.total}</span>
+                                  <span className="pill text-text" style={getMiniBadgeStyle(activity.accent, theme)}>
+                                    {activity.total}
+                                  </span>
                                 ) : (
                                   <span className="pill">0</span>
                                 )}
                                 {activity.total ? (
-                                  <span className="inline-flex items-center gap-1 rounded-full bg-slate-950/45 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-200/85">
+                                  <span className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.14em]" style={getMiniBadgeStyle(activity.accent, theme)}>
                                     <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: activity.accent }} />
                                     Activo
                                   </span>
@@ -516,12 +605,9 @@ export function CalendarPage() {
                                   <div
                                     key={item.id}
                                     className="rounded-2xl px-3 py-2 text-[11px] font-semibold leading-5 backdrop-blur-sm"
-                                    style={{
-                                      backgroundColor: `${item.color ?? item.projectColor ?? defaultActivityColor}20`,
-                                      color: item.color ?? item.projectColor ?? defaultActivityColor,
-                                    }}
+                                    style={getDayTagStyle(item.color ?? item.projectColor ?? defaultActivityColor, theme)}
                                   >
-                                    {item.title}
+                                    <span style={clampTwoLinesStyle}>{item.title}</span>
                                   </div>
                                 ))
                               ) : (
@@ -537,9 +623,9 @@ export function CalendarPage() {
                               ) : null}
 
                               {activity.total ? (
-                                <div className="mt-2 flex flex-wrap gap-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-200/85">
-                                  {activity.tasks ? <span className="rounded-full bg-slate-950/45 px-2 py-1">{activity.tasks} tareas</span> : null}
-                                  {activity.events ? <span className="rounded-full bg-slate-950/45 px-2 py-1">{activity.events} eventos</span> : null}
+                                <div className="mt-2 flex flex-wrap gap-2 text-[10px] font-semibold uppercase tracking-[0.14em]">
+                                  {activity.tasks ? <span className="rounded-full px-2 py-1" style={getMiniBadgeStyle(activity.accent, theme)}>{activity.tasks} tareas</span> : null}
+                                  {activity.events ? <span className="rounded-full px-2 py-1" style={getMiniBadgeStyle(activity.accent, theme)}>{activity.events} eventos</span> : null}
                                 </div>
                               ) : (
                                 <p className="text-[11px] text-muted">Espacio libre para planificar</p>
@@ -554,7 +640,7 @@ export function CalendarPage() {
               </div>
             </article>
 
-            <DayAgenda items={selectedItems} title={formatDate(selectedDate.toISOString(), { withYear: true })} />
+            <DayAgenda items={selectedItems} theme={theme} title={formatDate(selectedDate.toISOString(), { withYear: true })} />
           </section>
         )}
       </>
@@ -562,7 +648,7 @@ export function CalendarPage() {
   );
 }
 
-function DayAgenda({ items, title }) {
+function DayAgenda({ items, title, theme }) {
   return (
     <section className="space-y-5">
       <article className="panel p-6">
@@ -572,7 +658,7 @@ function DayAgenda({ items, title }) {
         <div className="mt-6 space-y-3">
           {items.length ? (
             items.map((item) => (
-              <div key={`${item.itemType}-${item.id}`} className="rounded-3xl border border-border bg-slate-900/65 p-4">
+              <div key={`${item.itemType}-${item.id}`} className="rounded-3xl border border-border p-4" style={getDayCardBaseStyle(theme)}>
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
                     <div className="flex items-center gap-2">
@@ -610,7 +696,7 @@ function DayAgenda({ items, title }) {
       <article className="panel p-6">
         <p className="section-kicker">Ventana critica</p>
         <h3 className="mt-3 text-2xl font-semibold text-text">Referencia de uso</h3>
-        <div className="mt-6 rounded-3xl border border-border bg-slate-900/55 p-5 text-sm leading-6 text-muted">
+        <div className="mt-6 rounded-3xl border border-border p-5 text-sm leading-6 text-muted" style={getInfoPanelStyle(theme, "#0EA5E9")}>
           Usa la vista semanal para distribuir bloques de trabajo y la mensual para revisar entregas, clases y
           reuniones importantes del semestre.
         </div>
@@ -621,7 +707,7 @@ function DayAgenda({ items, title }) {
 
 function Stat({ title, value }) {
   return (
-    <div className="rounded-3xl border border-border bg-slate-900/65 p-4">
+    <div className="rounded-3xl border border-border p-4 surface-tile">
       <p className="text-sm text-muted">{title}</p>
       <strong className="mt-3 block text-3xl font-semibold text-text">{value}</strong>
     </div>

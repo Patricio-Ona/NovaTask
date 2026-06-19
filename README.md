@@ -193,4 +193,4 @@ Fuentes principales del modelo de datos:
 
 ## Observacion
 
-Este repositorio corresponde al desarrollo practico de NovaTask como plataforma academica funcional, preparada para pruebas, documentacion de tesis y despliegue web.
+Este repositorio corresponde al desarrollo practico de NovaTask como plataforma academica funcional, preparada para pruebas, documentación y despliegue web.

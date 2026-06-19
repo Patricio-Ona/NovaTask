@@ -106,7 +106,7 @@ export function DashboardPage() {
         <section className="panel overflow-hidden p-0">
           <div className="bg-primary-glow p-5 sm:p-6">
             <div className="grid gap-6 xl:grid-cols-[1.1fr,0.9fr] xl:items-center">
-              <div>
+              <div className="min-w-0">
                 <p className="section-kicker">Bienvenido</p>
                 <h1 className="mt-3 text-3xl font-semibold text-text sm:text-4xl">
                   Tu espacio esta listo para empezar.
@@ -128,7 +128,7 @@ export function DashboardPage() {
                 </div>
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid min-w-0 gap-3 [grid-template-columns:repeat(auto-fit,minmax(150px,1fr))]">
                 <SpotlightCard label="Proyectos" value="0" tone="primary" helper="Sin espacios creados" />
                 <SpotlightCard label="Tareas" value="0" tone="secondary" helper="Todavia no registras pendientes" />
                 <SpotlightCard label="Calendario" value="0" tone="danger" helper="No hay entregas cargadas" />
@@ -173,8 +173,8 @@ export function DashboardPage() {
       <section className="grid gap-4 xl:grid-cols-[1.1fr,0.9fr] xl:gap-5">
         <article className="panel overflow-hidden p-0">
           <div className="bg-primary-glow p-4 sm:p-6">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-              <div>
+            <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+              <div className="min-w-0">
                 <p className="section-kicker">Foco semanal</p>
                 <h2 className="mt-3 text-3xl font-semibold text-text sm:text-4xl">Tu semana en un solo vistazo.</h2>
                 <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
@@ -182,7 +182,7 @@ export function DashboardPage() {
                 </p>
               </div>
 
-              <div className="grid w-full gap-3 sm:grid-cols-2 lg:max-w-[430px]">
+              <div className="grid w-full min-w-0 gap-3 [grid-template-columns:repeat(auto-fit,minmax(150px,1fr))] xl:max-w-[430px]">
                 <SpotlightCard label="Vencidas" value={data.metrics.overdueCount} tone="danger" helper="Revisalas cuanto antes" />
                 <SpotlightCard label="Alta prioridad" value={data.metrics.highPriorityOpen} tone="primary" helper="Lo mas urgente ahora" />
                 <SpotlightCard label="Para hoy" value={data.metrics.dueToday} tone="secondary" helper="Pendiente para hoy" />
@@ -191,10 +191,10 @@ export function DashboardPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 border-t border-border p-4 sm:gap-4 sm:p-6 xl:grid-cols-5">
+          <div className="grid gap-3 border-t border-border p-4 sm:gap-4 sm:p-6 [grid-template-columns:repeat(auto-fit,minmax(132px,1fr))]">
             {metrics.map(([label, value]) => (
-              <article key={label} className="metric-card">
-                <p className="text-sm text-muted">{label}</p>
+              <article key={label} className="metric-card min-w-0">
+                <p className="text-sm text-muted [overflow-wrap:anywhere]">{label}</p>
                 <strong className="mt-4 block text-4xl font-semibold text-text">{value}</strong>
               </article>
             ))}
